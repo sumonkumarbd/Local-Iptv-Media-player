@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Media Player</string>
+    <string name="local_files">Local Files</string>
+    <string name="iptv_streams">IPTV Streams</string>
+    <string name="player">Player</string>
+    <string name="add_stream">Add Stream</string>
+    <string name="stream_name">Stream Name</string>
+    <string name="stream_url">Stream URL</string>
+    <string name="delete">Delete</string>
+    <string name="play">Play</string>
+    <string name="about">About</string>
+    <string name="legal_notice">Legal Notice</string>
+    <string name="permission_storage">Storage permission is required to access your media files</string>
+    <string name="permission_denied">Permission denied. Some features may not work properly.</string>
+    <string name="error_playing_media">Error playing media file</string>
+    <string name="error_invalid_url">Please enter a valid URL</string>
+    <string name="stream_added">Stream added successfully</string>
+    <string name="playback_completed">Playback completed</string>
+    <string name="stream_name_optional">Stream Name (optional)</string>
+    <string name="username">Username</string>
+    <string name="stream_url_http_https_rtmp_rtsp">Stream URL (http://, https://, rtmp://, rtsp://)</string>
+    <string name="saved_streams">Saved Streams:</string>
+    <string name="password_optional">Password\n</string>
+</resources>
