@@ -1,20 +1,23 @@
-package com.example.mediaplayer;
+package com.example.mediaplayer.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.mediaplayer.R;
+import com.example.mediaplayer.activities.VideoPlayerActivity;
+import com.example.mediaplayer.models.MediaFile;
+
 import java.util.ArrayList;
 import java.util.List;
 

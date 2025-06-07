@@ -1,4 +1,4 @@
-package com.example.mediaplayer;
+package com.example.mediaplayer.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mediaplayer.R;
 
 public class VideoPlayerActivity extends AppCompatActivity {
     private VideoView videoView;

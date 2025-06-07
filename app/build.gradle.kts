@@ -45,6 +45,22 @@ dependencies {
     // implementation 'androidx.media3:media3-exoplayer:1.2.0'
     // implementation 'androidx.media3:media3-ui:1.2.0'
 
+    // Retrofit for API calls
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // OkHttp for networking
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    // Glide for image loading
+    implementation(libs.glide)
+
+    // Lifecycle components
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.runtime)
+
     // Testing
     testImplementation (libs.junit)
     androidTestImplementation (libs.junit.v115)

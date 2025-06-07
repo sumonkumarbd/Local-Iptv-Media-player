@@ -1,4 +1,4 @@
-package com.example.mediaplayer;
+package com.example.mediaplayer.models;
 
 public class MediaFile {
     private String name;
