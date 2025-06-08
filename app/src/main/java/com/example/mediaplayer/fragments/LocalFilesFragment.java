@@ -1,4 +1,4 @@
-package com.example.mediaplayer;
+package com.example.mediaplayer.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +15,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.mediaplayer.R;
+import com.example.mediaplayer.activities.VideoPlayerActivity;
+import com.example.mediaplayer.models.MediaFile;
+
 import java.util.ArrayList;
 import java.util.List;
 
