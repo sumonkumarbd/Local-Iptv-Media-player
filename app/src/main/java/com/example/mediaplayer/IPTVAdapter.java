@@ -5,40 +5,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.example.mediaplayer.models.IPTVStream;
 import java.util.List;
 
 public class IPTVAdapter extends ArrayAdapter<IPTVStream> {
+    private Context context;
     private List<IPTVStream> streams;
 
     public IPTVAdapter(Context context, List<IPTVStream> streams) {
         super(context, R.layout.item_iptv_stream, streams);
+        this.context = context;
         this.streams = streams;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_iptv_stream, parent, false);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_iptv_stream, parent, false);
         }
 
         IPTVStream stream = streams.get(position);
 
         TextView nameText = convertView.findViewById(R.id.streamName);
-        TextView urlText = convertView.findViewById(R.id.streamUrl);
-        Button deleteButton = convertView.findViewById(R.id.deleteButton);
+        TextView typeText = convertView.findViewById(R.id.streamType);
+        ImageView thumbnailImage = convertView.findViewById(R.id.streamThumbnail);
 
         nameText.setText(stream.getName());
-        urlText.setText(stream.getUrl());
+        typeText.setText(stream.getStreamType().toUpperCase());
 
-        deleteButton.setOnClickListener(v -> {
-            streams.remove(position);
-            notifyDataSetChanged();
-        });
+        // TODO: Load thumbnail if available
+        // You can use an image loading library like Glide or Picasso here
+        // if (stream.getThumbnailUrl() != null && !stream.getThumbnailUrl().isEmpty())
+        // {
+        // Glide.with(context).load(stream.getThumbnailUrl()).into(thumbnailImage);
+        // }
 
         return convertView;
     }

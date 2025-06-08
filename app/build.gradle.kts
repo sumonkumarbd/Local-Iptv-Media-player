@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mediaplayer"
-        minSdk = 21
-        targetSdk = 35
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -26,27 +26,35 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    // AndroidX Libraries
-    implementation (libs.appcompat.v161)
-    implementation (libs.constraintlayout.v214)
-    implementation (libs.viewpager.v100)
-    implementation (libs.fragment.v162)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
 
-    // Material Design
-    implementation (libs.material.v1100)
+    //ViewPager
+    implementation(libs.viewpager2)
+    
+    // ExoPlayer dependencies
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
+    implementation(libs.media3.exoplayer.hls)
+    implementation(libs.media3.exoplayer.dash)
+    implementation(libs.media3.datasource)
+    implementation(libs.media3.common)
 
-    // Media libraries (optional - for enhanced video playback)
-    // implementation 'androidx.media3:media3-exoplayer:1.2.0'
-    // implementation 'androidx.media3:media3-ui:1.2.0'
-
-    // Testing
-    testImplementation (libs.junit)
-    androidTestImplementation (libs.junit.v115)
-    androidTestImplementation (libs.espresso.core.v351)
+    //Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0") {
+        exclude(group = "com.github.bumptech.glide", module = "annotations")
+    }
+    implementation("com.github.bumptech.glide:annotations:4.16.0")
+    
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }

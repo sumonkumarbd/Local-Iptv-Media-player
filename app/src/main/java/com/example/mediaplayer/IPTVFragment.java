@@ -1,101 +1,242 @@
 package com.example.mediaplayer;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import java.util.ArrayList;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.mediaplayer.adapters.IPTVPagerAdapter;
+import com.example.mediaplayer.api.IPTVService;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONException;
+
 public class IPTVFragment extends Fragment {
-    private EditText urlInput;
-    private EditText nameInput;
-    private EditText passwordInput;
-    private Button addButton;
-    private ListView streamsList;
-    private List<IPTVStream> streams;
-    private IPTVAdapter adapter;
+    private static final String TAG = "IPTVFragment";
+    private static final String PREFS_NAME = "iptv_prefs";
 
+    // Login form views
+    private TextInputLayout tilBaseUrl;
+    private TextInputLayout tilUsername;
+    private TextInputLayout tilPassword;
+    private TextInputEditText etBaseUrl;
+    private TextInputEditText etUsername;
+    private TextInputEditText etPassword;
+    private SwitchMaterial switchXUI;
+    private MaterialButton btnLogin;
+    private ProgressBar progressBar;
+    private TextView tvError;
+    private View loginForm;
+    private View contentLayout;
+
+    // Content views
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    private IPTVPagerAdapter pagerAdapter;
+
+    private IPTVService iptvService;
+
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_i_p_t_v, container, false);
-
-        urlInput = view.findViewById(R.id.urlInput);
-        nameInput = view.findViewById(R.id.nameInput);
-        passwordInput = view.findViewById(R.id.passwordInput);
-        addButton = view.findViewById(R.id.addButton);
-        streamsList = view.findViewById(R.id.streamsList);
-
-        streams = new ArrayList<>();
-        adapter = new IPTVAdapter(getActivity(), streams);
-        streamsList.setAdapter(adapter);
-
-        addButton.setOnClickListener(v -> addStream());
-
-        streamsList.setOnItemClickListener((parent, v, position, id) -> {
-            IPTVStream stream = streams.get(position);
-//            playStream(stream);
-        });
-
-        // Add some example streams (commented out - user should add their own)
-        // addExampleStreams();
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_iptv, container, false);
+        initializeViews(view);
+        setupTabLayout();
+        checkLoginStatus();
         return view;
     }
 
-    private void addStream() {
-        String url = urlInput.getText().toString().trim();
-        String name = nameInput.getText().toString().trim();
-        String password = passwordInput.getText().toString().trim();
+    private void initializeViews(View view) {
+        // Login form views
+        tilBaseUrl = view.findViewById(R.id.tilBaseUrl);
+        tilUsername = view.findViewById(R.id.tilUsername);
+        tilPassword = view.findViewById(R.id.tilPassword);
+        etBaseUrl = view.findViewById(R.id.etBaseUrl);
+        etUsername = view.findViewById(R.id.etUsername);
+        etPassword = view.findViewById(R.id.etPassword);
+        switchXUI = view.findViewById(R.id.switchXUI);
+        btnLogin = view.findViewById(R.id.btnLogin);
+        progressBar = view.findViewById(R.id.progressBar);
+        tvError = view.findViewById(R.id.tvError);
+        loginForm = view.findViewById(R.id.loginForm);
+        contentLayout = view.findViewById(R.id.contentLayout);
 
-        if (url.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter a stream URL", Toast.LENGTH_SHORT).show();
+        // Content views
+        tabLayout = view.findViewById(R.id.tabLayout);
+        viewPager = view.findViewById(R.id.viewPager);
+
+        btnLogin.setOnClickListener(v -> attemptLogin());
+    }
+
+    private void setupTabLayout() {
+        pagerAdapter = new IPTVPagerAdapter(this);
+        viewPager.setAdapter(pagerAdapter);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("Live TV");
+                    break;
+                case 1:
+                    tab.setText("Movies");
+                    break;
+                case 2:
+                    tab.setText("Series");
+                    break;
+            }
+        }).attach();
+    }
+
+    private void checkLoginStatus() {
+        SharedPreferences prefs = requireContext().getSharedPreferences(PREFS_NAME, 0);
+        String url = prefs.getString("base_url", "");
+        String username = prefs.getString("username", "");
+        String password = prefs.getString("password", "");
+        boolean isXUI = prefs.getBoolean("is_xui", false);
+
+        if (!url.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
+            // User is logged in
+            iptvService = new IPTVService(url, username, password, isXUI);
+            showContent();
+        } else {
+            // User needs to login
+            showLoginForm();
+        }
+    }
+
+    private void attemptLogin() {
+        // Reset errors
+        tilBaseUrl.setError(null);
+        tilUsername.setError(null);
+        tilPassword.setError(null);
+
+        // Get values
+        String baseUrl = etBaseUrl.getText().toString().trim();
+        String username = etUsername.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        boolean isXUI = switchXUI.isChecked();
+
+        // Validate inputs
+        if (!validateInputs(baseUrl, username, password)) {
             return;
         }
 
+        showLoading(true);
+        hideError();
 
-        if (name.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter a stream name", Toast.LENGTH_SHORT).show();
+        // Create service instance
+        iptvService = new IPTVService(baseUrl, username, password, isXUI);
+
+        // Perform login in background
+        new Thread(() -> {
+            try {
+                iptvService.getUserInfo();
+                requireActivity().runOnUiThread(() -> {
+                    showLoading(false);
+                    saveCredentials(baseUrl, username, password, isXUI);
+                    showContent();
+                });
+            } catch (IOException e) {
+                Log.e(TAG, "Network error during login", e);
+                requireActivity().runOnUiThread(() -> {
+                    showLoading(false);
+                    showError("Network error: " + e.getMessage());
+                });
+            } catch (JSONException e) {
+                Log.e(TAG, "Invalid response format", e);
+                requireActivity().runOnUiThread(() -> {
+                    showLoading(false);
+                    showError("Invalid server response");
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Unexpected error during login", e);
+                requireActivity().runOnUiThread(() -> {
+                    showLoading(false);
+                    showError("Login failed: " + e.getMessage());
+                });
+            }
+        }).start();
+    }
+
+    private boolean validateInputs(String baseUrl, String username, String password) {
+        boolean isValid = true;
+
+        if (baseUrl.isEmpty()) {
+            tilBaseUrl.setError("Base URL is required");
+            isValid = false;
+        } else if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
+            tilBaseUrl.setError("URL must start with http:// or https://");
+            isValid = false;
+        }
+
+        if (username.isEmpty()) {
+            tilUsername.setError("Username is required");
+            isValid = false;
         }
 
         if (password.isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter a password", Toast.LENGTH_SHORT).show();
+            tilPassword.setError("Password is required");
+            isValid = false;
         }
 
-        if (!isValidUrl(url)) {
-            Toast.makeText(getActivity(), "Please enter a valid URL", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        IPTVStream stream = new IPTVStream(name, password , url);
-        streams.add(stream);
-        adapter.notifyDataSetChanged();
-
-        urlInput.setText("");
-        nameInput.setText("");
-        passwordInput.setText("");
-
-        Toast.makeText(getActivity(), "Stream added successfully", Toast.LENGTH_SHORT).show();
+        return isValid;
     }
 
-    private boolean isValidUrl(String url) {
-        return url.startsWith("http://") || url.startsWith("https://") ||
-                url.startsWith("rtmp://") || url.startsWith("rtsp://");
+    private void saveCredentials(String baseUrl, String username, String password, boolean isXUI) {
+        requireContext().getSharedPreferences(PREFS_NAME, 0)
+                .edit()
+                .putString("base_url", baseUrl)
+                .putString("username", username)
+                .putString("password", password)
+                .putBoolean("is_xui", isXUI)
+                .apply();
     }
 
-    private void playStream(IPTVStream stream) {
-        Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
-        intent.putExtra("media_path", stream.getUrl());
-        intent.putExtra("media_title", stream.getName());
-        intent.putExtra("password", stream.getPassword());
-        intent.putExtra("is_stream", true);
-        startActivity(intent);
+    private void showLoginForm() {
+        loginForm.setVisibility(View.VISIBLE);
+        contentLayout.setVisibility(View.GONE);
+    }
+
+    private void showContent() {
+        loginForm.setVisibility(View.GONE);
+        contentLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showLoading(boolean show) {
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        btnLogin.setEnabled(!show);
+    }
+
+    private void showError(String message) {
+        tvError.setText(message);
+        tvError.setVisibility(View.VISIBLE);
+    }
+
+    private void hideError() {
+        tvError.setVisibility(View.GONE);
+    }
+
+    public IPTVService getIPTVService() {
+        return iptvService;
     }
 }

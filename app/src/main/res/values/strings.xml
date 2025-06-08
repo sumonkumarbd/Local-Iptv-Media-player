@@ -22,4 +22,53 @@
     <string name="stream_url_http_https_rtmp_rtsp">Stream URL (http://, https://, rtmp://, rtsp://)</string>
     <string name="saved_streams">Saved Streams:</string>
     <string name="password_optional">Password\n</string>
+
+    <!-- Login screen -->
+    <string name="login_title">Welcome</string>
+    <string name="login_base_url_hint">Base URL</string>
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="login_error">Login failed. Please check your credentials.</string>
+    <string name="login_loading">Logging in…</string>
+
+    <!-- Navigation -->
+    <string name="nav_live_tv">Live TV</string>
+    <string name="nav_movies">Movies</string>
+    <string name="nav_series">Series</string>
+    <string name="menu_logout">Logout</string>
+
+    <!-- Search -->
+    <string name="search_live_hint">Search Channel</string>
+    <string name="search_movies_hint">Search Movie</string>
+    <string name="search_series_hint">Search Series or Episode</string>
+
+    <!-- Player -->
+    <string name="player_error">Error playing stream</string>
+    <string name="player_retry">Retry</string>
+    <string name="player_loading">Loading…</string>
+
+    <!-- Categories -->
+    <string name="category_all">All</string>
+    <string name="category_favorites">Favorites</string>
+    <string name="category_recent">Recent</string>
+
+    <!-- Series -->
+    <string name="series_season">Season %1$s</string>
+    <string name="series_episode">Episode %1$s</string>
+    <string name="series_no_episodes">No episodes available</string>
+    <string name="series_thumbnail">Series thumbnail</string>
+    <string name="series_episodes">Episodes</string>
+    <string name="series_rating">Rating: %1$.1f/5</string>
+
+    <!-- Common -->
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_unknown">An unknown error occurred.</string>
+    <string name="error_retry">Retry</string>
+    <string name="error_cancel">Cancel</string>
+    <string name="loading">Loading…</string>
+    <string name="no_data">No data available</string>
+    <string name="back">Back</string>
+
+    <string name="stream_thumbnail">Stream thumbnail</string>
 </resources>
