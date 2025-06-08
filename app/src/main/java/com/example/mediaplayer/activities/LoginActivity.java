@@ -1,4 +1,4 @@
-package com.example.mediaplayer;
+package com.example.mediaplayer.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mediaplayer.R;
 import com.example.mediaplayer.api.IPTVService;
 import com.example.mediaplayer.models.UserInfo;
 import com.google.android.material.textfield.TextInputEditText;

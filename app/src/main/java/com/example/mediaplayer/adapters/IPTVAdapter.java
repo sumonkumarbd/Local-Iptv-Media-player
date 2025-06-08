@@ -1,4 +1,4 @@
-package com.example.mediaplayer;
+package com.example.mediaplayer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.mediaplayer.R;
 import com.example.mediaplayer.models.IPTVStream;
 import java.util.List;
 
