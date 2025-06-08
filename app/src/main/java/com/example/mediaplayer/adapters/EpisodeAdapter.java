@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mediaplayer.R;
-import com.example.mediaplayer.VideoPlayerActivity;
+import com.example.mediaplayer.activities.VideoPlayerActivity;
 import com.example.mediaplayer.api.IPTVService;
 import com.example.mediaplayer.models.Episode;
 

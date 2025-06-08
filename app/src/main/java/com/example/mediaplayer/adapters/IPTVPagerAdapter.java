@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.mediaplayer.IPTVFragment;
+import com.example.mediaplayer.fragments.IPTVFragment;
 import com.example.mediaplayer.fragments.LiveTVFragment;
 import com.example.mediaplayer.fragments.MoviesFragment;
 import com.example.mediaplayer.fragments.SeriesFragment;

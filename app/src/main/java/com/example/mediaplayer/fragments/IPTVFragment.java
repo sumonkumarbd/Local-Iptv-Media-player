@@ -1,4 +1,4 @@
-package com.example.mediaplayer;
+package com.example.mediaplayer.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.mediaplayer.R;
 import com.example.mediaplayer.adapters.IPTVPagerAdapter;
 import com.example.mediaplayer.api.IPTVService;
 import com.google.android.material.button.MaterialButton;
@@ -25,8 +25,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.json.JSONException;
 
