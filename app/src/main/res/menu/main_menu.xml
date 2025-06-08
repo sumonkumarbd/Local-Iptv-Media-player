@@ -14,4 +14,10 @@
         android:icon="@android:drawable/ic_dialog_alert"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/menu_logout"
+        android:icon="@drawable/ic_logout"
+        app:showAsAction="never" />
+
 </menu>

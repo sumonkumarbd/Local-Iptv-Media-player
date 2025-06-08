@@ -253,4 +253,24 @@ public class SeriesFragment extends Fragment {
     private void showLoading(boolean show) {
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+
+    public void clearData() {
+        // Clear the IPTV service instance
+        iptvService = null;
+
+        // Clear the data lists
+        categories.clear();
+        seriesList.clear();
+
+        // Notify adapters
+        if (categoryAdapter != null) {
+            categoryAdapter.notifyDataSetChanged();
+        }
+        if (seriesAdapter != null) {
+            seriesAdapter.notifyDataSetChanged();
+        }
+
+        // Hide loading indicator
+        showLoading(false);
+    }
 }

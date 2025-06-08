@@ -213,8 +213,25 @@ public class IPTVFragment extends Fragment {
     }
 
     private void showLoginForm() {
-        loginForm.setVisibility(View.VISIBLE);
-        contentLayout.setVisibility(View.GONE);
+        if (getView() == null)
+            return; // Safety check for fragment view
+
+        // Show login form
+        View loginForm = getView().findViewById(R.id.loginForm);
+        if (loginForm != null) {
+            loginForm.setVisibility(View.VISIBLE);
+        }
+
+        // Hide content
+        View contentLayout = getView().findViewById(R.id.contentLayout);
+        if (contentLayout != null) {
+            contentLayout.setVisibility(View.GONE);
+        }
+
+        // Clear any existing data
+        if (pagerAdapter != null) {
+            pagerAdapter.clearData();
+        }
     }
 
     private void showContent() {
@@ -238,5 +255,32 @@ public class IPTVFragment extends Fragment {
 
     public IPTVService getIPTVService() {
         return iptvService;
+    }
+
+    public void clearData() {
+        // Clear IPTV service
+        iptvService = null;
+
+        // Clear adapter data
+        if (pagerAdapter != null) {
+            pagerAdapter.clearData();
+        }
+
+        // Clear login form fields
+        if (etBaseUrl != null)
+            etBaseUrl.setText("");
+        if (etUsername != null)
+            etUsername.setText("");
+        if (etPassword != null)
+            etPassword.setText("");
+        if (switchXUI != null)
+            switchXUI.setChecked(false);
+        if (tvError != null)
+            tvError.setVisibility(View.GONE);
+
+        // Show login form if view is available
+        if (isAdded() && getView() != null) {
+            showLoginForm();
+        }
     }
 }

@@ -162,4 +162,24 @@ public class MoviesFragment extends Fragment {
     private void showLoading(boolean show) {
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
+
+    public void clearData() {
+        // Clear the IPTV service instance
+        iptvService = null;
+
+        // Clear the data lists
+        categories.clear();
+        movies.clear();
+
+        // Notify adapters
+        if (categoryAdapter != null) {
+            categoryAdapter.notifyDataSetChanged();
+        }
+        if (movieAdapter != null) {
+            movieAdapter.notifyDataSetChanged();
+        }
+
+        // Hide loading indicator
+        showLoading(false);
+    }
 }

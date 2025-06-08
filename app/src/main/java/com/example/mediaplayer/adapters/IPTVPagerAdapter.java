@@ -36,4 +36,18 @@ public class IPTVPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 3;
     }
+
+    public void clearData() {
+        // Clear data in each fragment
+        for (int i = 0; i < getItemCount(); i++) {
+            Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag("f" + i);
+            if (fragment instanceof LiveTVFragment) {
+                ((LiveTVFragment) fragment).clearData();
+            } else if (fragment instanceof MoviesFragment) {
+                ((MoviesFragment) fragment).clearData();
+            } else if (fragment instanceof SeriesFragment) {
+                ((SeriesFragment) fragment).clearData();
+            }
+        }
+    }
 }
