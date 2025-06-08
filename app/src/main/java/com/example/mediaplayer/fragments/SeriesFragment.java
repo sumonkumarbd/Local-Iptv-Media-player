@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mediaplayer.R;
-import com.example.mediaplayer.VideoPlayerActivity;
+import com.example.mediaplayer.activities.VideoPlayerActivity;
 import com.example.mediaplayer.adapters.CategoryAdapter;
 import com.example.mediaplayer.adapters.EpisodeAdapter;
 import com.example.mediaplayer.adapters.SeriesAdapter;

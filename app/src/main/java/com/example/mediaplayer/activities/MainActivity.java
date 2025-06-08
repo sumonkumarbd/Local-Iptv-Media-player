@@ -21,6 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.mediaplayer.fragments.LocalFilesFragment;
+import com.example.mediaplayer.fragments.PlayerFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.snackbar.Snackbar;
 

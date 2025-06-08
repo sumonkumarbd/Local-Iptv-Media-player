@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mediaplayer.R;
-import com.example.mediaplayer.VideoPlayerActivity;
+import com.example.mediaplayer.activities.VideoPlayerActivity;
 import com.example.mediaplayer.adapters.CategoryAdapter;
 import com.example.mediaplayer.adapters.ChannelAdapter;
 import com.example.mediaplayer.api.IPTVService;
