@@ -1,7 +1,10 @@
-package com.example.mediaplayer.activities;
+package com.example.mediaplayer;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,16 +21,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import com.example.mediaplayer.fragments.LocalFilesFragment;
-import com.example.mediaplayer.fragments.PlayerFragment;
-import com.example.mediaplayer.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final String PREFS_NAME = "MediaPlayerPrefs";
     private static final String DISCLAIMER_ACCEPTED = "disclaimer_accepted";
+    private static final String IPTV_PREFS = "iptv_prefs";
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -119,9 +120,44 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.action_legal) {
             showComplianceDisclaimer();
             return true;
+        } else if (id == R.id.action_logout) {
+            showLogoutConfirmation();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLogoutConfirmation() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton("Yes", (dialog, which) -> performLogout())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void performLogout() {
+        // Clear all SharedPreferences data
+        getSharedPreferences(IPTV_PREFS, MODE_PRIVATE).edit().clear().apply();
+        getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit().clear().apply();
+
+        // Clear any cached data in memory
+        if (viewPager != null && viewPager.getAdapter() != null) {
+            ViewPagerAdapter adapter = (ViewPagerAdapter) viewPager.getAdapter();
+            if (adapter != null) {
+                for (Fragment fragment : adapter.fragmentList) {
+                    if (fragment instanceof IPTVFragment) {
+                        ((IPTVFragment) fragment).clearData();
+                    }
+                }
+            }
+        }
+
+        // Switch to IPTV tab to show login form
+        if (viewPager != null) {
+            viewPager.setCurrentItem(1); // Assuming IPTV tab is at index 1
+        }
     }
 
     private void showAboutDialog() {
@@ -142,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupTabs() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new LocalFilesFragment(), "Local Files");
-//        adapter.addFragment(new IPTVFragment(), "IPTV");
+        adapter.addFragment(new IPTVFragment(), "IPTV");
         adapter.addFragment(new PlayerFragment(), "Player");
 
         viewPager.setAdapter(adapter);
@@ -178,16 +214,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkLegacyPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
                     PERMISSION_REQUEST_CODE);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
