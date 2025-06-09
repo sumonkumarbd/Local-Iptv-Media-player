@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
     <!-- Brand Colors -->
     <color name="primary">#FF6600</color>       <!-- VLC Orange -->
     <color name="primary_dark">#CC5200</color>  <!-- Darker Orange -->
     <color name="primary_light">#FF8C33</color> <!-- Light Orange -->
 
-    <color name="accent">#FF6600</color>        <!-- Same strong orange accent -->
+    <color name="accent">#FF6600</color>        <!-- Accent orange -->
 
     <!-- Status Colors -->
-    <color name="success">#4CAF50</color>       <!-- Green -->
-    <color name="error">#F44336</color>         <!-- Red -->
-    <color name="warning">#FFC107</color>       <!-- Amber -->
+    <color name="success">#81C784</color>       <!-- Light green -->
+    <color name="error">#E57373</color>         <!-- Light red -->
+    <color name="warning">#FFD54F</color>       <!-- Light amber -->
 
     <!-- Text Colors -->
-    <color name="primary_text">#212121</color>  <!-- Almost black -->
-    <color name="secondary_text">#757575</color> <!-- Gray -->
+    <color name="primary_text">#FFFFFF</color>  <!-- White text for dark bg -->
+    <color name="secondary_text">#B0B0B0</color> <!-- Light gray -->
 
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
-    <color name="text_hint">#BDBDBD</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="text_hint">#757575</color>     <!-- Darker gray hint -->
 
     <!-- Background / Surface -->
-    <color name="background">#FFFFFF</color>     <!-- White -->
-    <color name="surface">#FFFFFF</color>
-    <color name="card_background">#F2F2F2</color> <!-- Very light gray -->
+    <color name="background">#121212</color>     <!-- Very dark background -->
+    <color name="surface">#1E1E1E</color>        <!-- Slightly lighter surface -->
+    <color name="card_background">#2C2C2C</color> <!-- Card background -->
 
     <!-- System Colors -->
-    <color name="icons">#000000</color>          <!-- Black icons -->
-    <color name="divider">#E0E0E0</color>        <!-- Light gray divider -->
+    <color name="icons">#FFFFFF</color>          <!-- White icons -->
+    <color name="divider">#424242</color>        <!-- Dark divider -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
@@ -46,7 +45,5 @@
     <color name="colorPrimaryDark">#CC5200</color>
     <color name="colorAccent">#FF6600</color>
 </resources>
-
-
 
 
