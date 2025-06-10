@@ -149,7 +149,8 @@ public class MoviesFragment extends Fragment {
     }
 
     private void onMovieSelected(Movie movie) {
-        String streamUrl = iptvService.getMovieUrl(movie.getStreamId(), "m3u8");
+        String streamUrl = iptvService.getMovieUrl(movie.getStreamId(),
+                movie.getContainerExtension() != null ? movie.getContainerExtension() : "mp4");
         Log.d(TAG, "Selected movie: " + movie.getName() + ", Stream URL: " + streamUrl);
 
         Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);

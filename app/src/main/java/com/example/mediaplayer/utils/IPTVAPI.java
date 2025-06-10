@@ -50,13 +50,7 @@ public class IPTVAPI implements Serializable {
      */
     public static String getLiveStreamUrl(boolean isXUI, String baseURL, String username, String password,
             String streamId, String format) {
-        String url = buildBaseUrl(baseURL);
-        if (isXUI) {
-            url += username + "/" + password + "/" + streamId + "." + format;
-        } else {
-            url += LIVE_PATH + "/" + username + "/" + password + "/" + streamId + "." + format;
-        }
-        return url;
+        return buildBaseUrl(baseURL) + LIVE_PATH + "/" + username + "/" + password + "/" + streamId + "." + format;
     }
 
     /**
@@ -72,13 +66,7 @@ public class IPTVAPI implements Serializable {
      */
     public static String getMovieUrl(boolean isXUI, String baseURL, String username, String password, String movieId,
             String format) {
-        String url = buildBaseUrl(baseURL);
-        if (isXUI) {
-            url += username + "/" + password + "/" + movieId + "." + format;
-        } else {
-            url += MOVIE_PATH + "/" + username + "/" + password + "/" + movieId + "." + format;
-        }
-        return url;
+        return buildBaseUrl(baseURL) + MOVIE_PATH + "/" + username + "/" + password + "/" + movieId + "." + format;
     }
 
     /**

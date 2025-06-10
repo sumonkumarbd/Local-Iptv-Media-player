@@ -95,6 +95,10 @@ public class IPTVService implements Serializable {
         return IPTVAPI.getLiveStreamUrl(isXUI, baseUrl, username, password, streamId, format);
     }
 
+    public String getLiveStreamUrl(String streamId, String format) {
+        return IPTVAPI.getLiveStreamUrl(isXUI, baseUrl, username, password, streamId, format);
+    }
+
     public String getMovieUrl(String streamId, String format) {
         return IPTVAPI.getMovieUrl(isXUI, baseUrl, username, password, streamId, format);
     }

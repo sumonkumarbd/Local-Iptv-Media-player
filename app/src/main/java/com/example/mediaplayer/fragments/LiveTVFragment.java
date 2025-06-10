@@ -149,7 +149,7 @@ public class LiveTVFragment extends Fragment {
     }
 
     private void onChannelSelected(Channel channel) {
-        String streamUrl = iptvService.getStreamUrl(channel.getStreamId(), "m3u8");
+        String streamUrl = iptvService.getLiveStreamUrl(channel.getStreamId(), "m3u8");
         Log.d(TAG, "Selected channel: " + channel.getName() + ", Stream URL: " + streamUrl);
 
         Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
