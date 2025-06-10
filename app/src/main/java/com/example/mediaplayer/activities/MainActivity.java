@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Media Player");
+            getSupportActionBar().setTitle(R.string.app_name);
         }
     }
 
