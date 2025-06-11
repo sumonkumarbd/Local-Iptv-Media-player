@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
 
+    // volley
+    implementation(libs.volley)
+
     //Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0") {

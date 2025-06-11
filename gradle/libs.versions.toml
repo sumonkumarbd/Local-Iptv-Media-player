@@ -18,6 +18,7 @@ materialVersion = "1.11.0"
 viewpager = "1.1.0"
 viewpagerVersion = "1.0.0"
 media3Version = "1.7.1"
+volley = "1.2.1"
 
 [libraries]
 appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
@@ -45,6 +46,7 @@ viewpager-v100 = { module = "androidx.viewpager:viewpager", version.ref = "viewp
 media3-common = { module = "androidx.media3:media3-common", version.ref = "media3Version" }
 media3-datasource = { module = "androidx.media3:media3-datasource", version.ref = "media3Version" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpagerVersion" }
+volley = { module = "com.android.volley:volley", version.ref = "volley" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
