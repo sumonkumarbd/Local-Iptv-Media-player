@@ -1,7 +1,9 @@
 package com.feed.sphere.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -137,14 +139,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadPlayerFragment();
         }else if (id == R.id.action_about) {
             showAboutDialog();
-        } else if (id == R.id.action_legal) {
-            showComplianceDisclaimer();
+        } else if (id == R.id.privacy_policy) {
+            showPrivacyPolicy();
         } else if (id == R.id.action_logout) {
             showLogoutConfirmation();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showPrivacyPolicy() {
+        String url = "https://sites.google.com/view/usrprivacypolicy/";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        // Optionally check if there is a browser to handle the intent
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "No web browser found to open the link.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadLocalFilesFragment() {

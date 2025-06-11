@@ -27,8 +27,8 @@
             app:showAsAction="never" />
 
         <item
-            android:id="@+id/action_legal"
-            android:title="Legal Notice"
+            android:id="@+id/privacy_policy"
+            android:title="Privacy Policy"
             android:icon="@android:drawable/ic_dialog_alert"
             app:showAsAction="never" />
 
