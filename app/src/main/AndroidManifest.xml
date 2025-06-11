@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.mediaplayer">
+    package="com.feed.mediaplayer">
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,7 +30,7 @@
 
         <!-- Main Activity -->
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.feed.mediaplayer.activities.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MediaPlayer">
             <intent-filter>
@@ -47,7 +47,7 @@
 
         <!-- Video Player Activity -->
         <activity
-            android:name=".activities.VideoPlayerActivity"
+            android:name="com.feed.mediaplayer.activities.VideoPlayerActivity"
             android:exported="false"
             android:theme="@style/Theme.MediaPlayer.Fullscreen"
             android:screenOrientation="landscape"

@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mediaplayer"
+    namespace = "com.feed.mediaplayer"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.mediaplayer"
+        applicationId = "com.feed.mediaplayer"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
