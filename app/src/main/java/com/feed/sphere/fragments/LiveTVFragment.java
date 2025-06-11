@@ -95,29 +95,32 @@ public class LiveTVFragment extends Fragment {
                 List<Category> liveCategories = iptvService.getLiveCategories();
                 Log.d(TAG, "Loaded " + liveCategories.size() + " categories");
 
-                requireActivity().runOnUiThread(() -> {
-                    categories.clear();
-                    categories.addAll(liveCategories);
-                    categoryAdapter.notifyDataSetChanged();
-                    showLoading(false);
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> {
+                        categories.clear();
+                        categories.addAll(liveCategories);
+                        categoryAdapter.notifyDataSetChanged();
+                        showLoading(false);
 
-                    // Load channels for the first category if available
-                    if (!categories.isEmpty()) {
-                        onCategorySelected(categories.get(0));
-                    } else {
-                        Toast.makeText(getContext(), "No categories found", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        if (!categories.isEmpty()) {
+                            onCategorySelected(categories.get(0));
+                        } else {
+                            Toast.makeText(getContext(), "No categories found", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             } catch (IOException | JSONException e) {
                 Log.e(TAG, "Error loading categories", e);
-                requireActivity().runOnUiThread(() -> {
-                    showLoading(false);
-                    Toast.makeText(getContext(), "Error loading categories: " + e.getMessage(), Toast.LENGTH_SHORT)
-                            .show();
-                });
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> {
+                        showLoading(false);
+                        Toast.makeText(getContext(), "Error loading categories: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                }
             }
         }).start();
     }
+
 
     private void onCategorySelected(Category category) {
         showLoading(true);
@@ -127,26 +130,30 @@ public class LiveTVFragment extends Fragment {
                 List<Channel> categoryChannels = iptvService.getLiveStreams(category.getCategoryId());
                 Log.d(TAG, "Loaded " + categoryChannels.size() + " channels");
 
-                requireActivity().runOnUiThread(() -> {
-                    channels.clear();
-                    channels.addAll(categoryChannels);
-                    channelAdapter.notifyDataSetChanged();
-                    showLoading(false);
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> {
+                        channels.clear();
+                        channels.addAll(categoryChannels);
+                        channelAdapter.notifyDataSetChanged();
+                        showLoading(false);
 
-                    if (categoryChannels.isEmpty()) {
-                        Toast.makeText(getContext(), "No channels found in this category", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        if (categoryChannels.isEmpty()) {
+                            Toast.makeText(getContext(), "No channels found in this category", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             } catch (IOException | JSONException e) {
                 Log.e(TAG, "Error loading channels", e);
-                requireActivity().runOnUiThread(() -> {
-                    showLoading(false);
-                    Toast.makeText(getContext(), "Error loading channels: " + e.getMessage(), Toast.LENGTH_SHORT)
-                            .show();
-                });
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> {
+                        showLoading(false);
+                        Toast.makeText(getContext(), "Error loading channels: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                }
             }
         }).start();
     }
+
 
     private void onChannelSelected(Channel channel) {
         String streamUrl = iptvService.getLiveStreamUrl(channel.getStreamId(), "m3u8");

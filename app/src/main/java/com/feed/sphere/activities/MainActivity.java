@@ -2,18 +2,26 @@ package com.feed.sphere.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        makeStatusBarTransparent();
         setContentView(R.layout.activity_main);
 
         initializeViews();
@@ -59,6 +68,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             disclaimerAccepted = true;
             proceedWithSetup();
         }
+    }
+
+    private void makeStatusBarTransparent() {
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
+        window.setStatusBarColor(getResources().getColor(R.color.primary));
     }
 
     private boolean isDisclaimerAccepted() {
@@ -121,6 +139,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
+        // Tint the drawer icon here
+        toggle.setDrawerArrowDrawable(new DrawerArrowDrawable(this) {{
+            setColor(ContextCompat.getColor(MainActivity.this, R.color.white));
+        }});
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -234,17 +256,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showAboutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("About Media Player")
-                .setMessage("Version 1.0\n\n" +
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = pInfo.versionName;
+        builder.setTitle(R.string.app_name)
+                .setMessage(version+"\n\n" +
                         "A legal media player for your personal content.\n\n" +
                         "Features:\n" +
                         "• Local file playback\n" +
-                        "• IPTV streaming support\n" +
+                        "• Network streaming support\n" +
                         "• Multiple format support\n" +
                         "• User-friendly interface\n\n" +
                         "Remember to only use legal content sources!")
                 .setPositiveButton("OK", null)
                 .show();
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void checkPermissions() {
