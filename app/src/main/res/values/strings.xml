@@ -70,6 +70,10 @@
     <string name="no_data">No data available</string>
     <string name="back">Back</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+
     <string name="stream_thumbnail">Stream thumbnail</string>
     <string name="disclaimer_text_format">
     IMPORTANT LEGAL DISCLAIMER:\n\n%s\n\nBy continuing, you acknowledge your responsibility for legal compliance.</string>

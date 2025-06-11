@@ -9,33 +9,38 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.feed.sphere.fragments.IPTVFragment;
 import com.feed.sphere.fragments.LocalFilesFragment;
 import com.feed.sphere.fragments.PlayerFragment;
 import com.feed.sphere.R;
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final String PREFS_NAME = "MediaPlayerPrefs";
     private static final String DISCLAIMER_ACCEPTED = "disclaimer_accepted";
     private static final String IPTV_PREFS = "iptv_prefs";
 
-    IPTVFragment iptvFragment;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private Toolbar toolbar;
     private boolean disclaimerAccepted = false;
+
+    // Fragment instances
+    private LocalFilesFragment localFilesFragment;
+    private IPTVFragment iptvFragment;
+    private PlayerFragment playerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         initializeViews();
         setupToolbar();
+        setupNavigationDrawer();
 
         if (!isDisclaimerAccepted()) {
             showComplianceDisclaimer();
@@ -91,13 +97,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void proceedWithSetup() {
-        setupTabs();
         checkPermissions();
+        // Load Local Files fragment by default after permissions
+        loadLocalFilesFragment();
     }
 
     private void initializeViews() {
-        viewPager = findViewById(R.id.viewPager);
-        tabLayout = findViewById(R.id.tabLayout);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
     }
 
@@ -108,28 +115,77 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setupNavigationDrawer() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_local_files) {
+            loadLocalFilesFragment();
+        } else if (id == R.id.nav_iptv) {
+            loadIPTVFragment();
+        } else if (id == R.id.nav_player) {
+            loadPlayerFragment();
+        }else if (id == R.id.action_about) {
+            showAboutDialog();
+        } else if (id == R.id.action_legal) {
+            showComplianceDisclaimer();
+        } else if (id == R.id.action_logout) {
+            showLogoutConfirmation();
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_about) {
-            showAboutDialog();
-            return true;
-        } else if (id == R.id.action_legal) {
-            showComplianceDisclaimer();
-            return true;
-        } else if (id == R.id.action_logout) {
-            showLogoutConfirmation();
-            return true;
+    private void loadLocalFilesFragment() {
+        if (localFilesFragment == null) {
+            localFilesFragment = new LocalFilesFragment();
         }
+        loadFragment(localFilesFragment, "Local Files");
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void loadIPTVFragment() {
+        if (iptvFragment == null) {
+            iptvFragment = new IPTVFragment();
+        }
+        loadFragment(iptvFragment, "IPTV");
+    }
+
+    private void loadPlayerFragment() {
+        if (playerFragment == null) {
+            playerFragment = new PlayerFragment();
+        }
+        loadFragment(playerFragment, "Player");
+    }
+
+    private void loadFragment(Fragment fragment, String title) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+
+        // Update toolbar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void showLogoutConfirmation() {
@@ -146,22 +202,20 @@ public class MainActivity extends AppCompatActivity {
         getSharedPreferences(IPTV_PREFS, MODE_PRIVATE).edit().clear().apply();
         getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit().clear().apply();
 
-        // Clear any cached data in memory
-        if (viewPager != null && viewPager.getAdapter() != null) {
-            ViewPagerAdapter adapter = (ViewPagerAdapter) viewPager.getAdapter();
-            if (adapter != null) {
-                for (Fragment fragment : adapter.fragmentList) {
-                    if (fragment instanceof IPTVFragment) {
-                        ((IPTVFragment) fragment).clearData();
-                    }
-                }
-            }
+        // Clear cached data in fragments
+        if (iptvFragment != null) {
+            iptvFragment.clearData();
         }
 
-        // Switch to IPTV tab to show login form
-        if (viewPager != null) {
-            viewPager.setCurrentItem(1); // Assuming IPTV tab is at index 1
-        }
+        // Reset fragments
+        localFilesFragment = null;
+        iptvFragment = null;
+        playerFragment = null;
+
+        // Load local files fragment again
+        loadLocalFilesFragment();
+
+        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
     }
 
     private void showAboutDialog() {
@@ -178,36 +232,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("OK", null)
                 .show();
     }
-
-    private void setupTabs() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        adapter.addFragment(new LocalFilesFragment(), "Local Files");
-
-        iptvFragment = new IPTVFragment(); // keep reference
-        adapter.addFragment(iptvFragment, "IPTV");
-
-        adapter.addFragment(new PlayerFragment(), "Player");
-
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageSelected(int position) {
-                if (adapter.getPageTitle(position).equals("IPTV") && iptvFragment != null) {
-                    iptvFragment.checkInternetAndToast(); // call method inside IPTVFragment
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
-    }
-
 
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -248,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
@@ -262,39 +286,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (allGranted) {
                 Toast.makeText(this, "Permissions granted", Toast.LENGTH_SHORT).show();
+                // Load Local Files fragment after permissions are granted
+                loadLocalFilesFragment();
             } else {
                 Toast.makeText(this, "Some permissions denied. Features may be limited.", Toast.LENGTH_LONG).show();
+                // Still load Local Files fragment even if some permissions are denied
+                loadLocalFilesFragment();
             }
-        }
-    }
-
-    private static class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final java.util.List<Fragment> fragmentList = new java.util.ArrayList<>();
-        private final java.util.List<String> fragmentTitleList = new java.util.ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            return fragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return fragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            fragmentList.add(fragment);
-            fragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return fragmentTitleList.get(position);
         }
     }
 }

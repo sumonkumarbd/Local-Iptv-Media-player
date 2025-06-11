@@ -7,7 +7,7 @@ import android.net.NetworkCapabilities;
 import android.os.Build;
 
 public class NetworkUtil {
-    public static boolean internetCheck(Context context) {
+    public static boolean isInternetAvailable(Context context) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (cm == null) return false;
@@ -17,9 +17,8 @@ public class NetworkUtil {
                 if (network == null) return false;
 
                 NetworkCapabilities capabilities = cm.getNetworkCapabilities(network);
-                return capabilities != null &&
-                        capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                        capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
+                return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+                // Optionally check .hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
             } else {
                 android.net.NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
                 return activeNetwork != null && activeNetwork.isConnected();
@@ -30,4 +29,3 @@ public class NetworkUtil {
         }
     }
 }
-

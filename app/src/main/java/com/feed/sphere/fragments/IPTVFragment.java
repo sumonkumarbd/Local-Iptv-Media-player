@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.json.JSONException;
 
@@ -57,21 +59,24 @@ public class IPTVFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_iptv, container, false);
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_iptv, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initializeViews(view);
-        checkInternetAndToast();
-        return view;
+        checkInternet();  // Called only after views are ready
     }
 
     // Public method to check internet and show Toast
-    public void checkInternetAndToast() {
-        if (NetworkUtil.internetCheck(getContext())) {
+    public void checkInternet() {
+        if (NetworkUtil.isInternetAvailable(getContext())) {
             setupTabLayout();
             checkLoginStatus();
         } else {
             tvStatus.setText("No internet connection");
-
         }
     }
 
