@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_iptv"
             android:icon="@drawable/ic_tv"
-            android:title="IPTV" />
+            android:title="Network Stream" />
         <item
             android:id="@+id/nav_player"
             android:icon="@drawable/ic_play"
