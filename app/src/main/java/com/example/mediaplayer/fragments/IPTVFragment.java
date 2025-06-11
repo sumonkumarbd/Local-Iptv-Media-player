@@ -8,15 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mediaplayer.R;
 import com.example.mediaplayer.adapters.IPTVPagerAdapter;
 import com.example.mediaplayer.api.IPTVService;
+import com.example.mediaplayer.utils.NetworkUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.tabs.TabLayout;
@@ -25,6 +28,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.json.JSONException;
 
@@ -42,7 +46,7 @@ public class IPTVFragment extends Fragment {
     private SwitchMaterial switchXUI;
     private MaterialButton btnLogin;
     private ProgressBar progressBar;
-    private TextView tvError;
+    private TextView tvError,tvStatus;
     private View loginForm;
     private View contentLayout;
 
@@ -59,9 +63,19 @@ public class IPTVFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_iptv, container, false);
         initializeViews(view);
-        setupTabLayout();
-        checkLoginStatus();
+        checkInternetAndToast();
         return view;
+    }
+
+    // Public method to check internet and show Toast
+    public void checkInternetAndToast() {
+        if (NetworkUtil.internetCheck(getContext())) {
+            setupTabLayout();
+            checkLoginStatus();
+        } else {
+            tvStatus.setText("No internet connection");
+
+        }
     }
 
     private void initializeViews(View view) {
@@ -78,6 +92,7 @@ public class IPTVFragment extends Fragment {
         tvError = view.findViewById(R.id.tvError);
         loginForm = view.findViewById(R.id.loginForm);
         contentLayout = view.findViewById(R.id.contentLayout);
+        tvStatus = view.findViewById(R.id.tvStatus);
 
         // Content views
         tabLayout = view.findViewById(R.id.tabLayout);

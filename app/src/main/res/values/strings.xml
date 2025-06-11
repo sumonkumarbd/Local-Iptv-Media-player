@@ -71,4 +71,14 @@
     <string name="back">Back</string>
 
     <string name="stream_thumbnail">Stream thumbnail</string>
+    <string name="disclaimer_text">IMPORTANT LEGAL DISCLAIMER:\n\n" +
+                        "• This media player is a neutral tool for playing your own content\n" +
+                        "• You are solely responsible for ensuring all content you play is legally obtained\n" +
+                        "• Do not use this app to access pirated, copyrighted, or unauthorized content\n" +
+                        "• IPTV streams must be from legitimate, authorized sources only\n" +
+                        "• We do not provide, host, or facilitate access to any content\n" +
+                        "• Use of this app for illegal activities is strictly prohibited\n" +
+                        "• Content streaming may consume significant data - check your plan\n\n" +
+                        "By continuing, you acknowledge your responsibility for legal compliance.</string>
+    <string name="interNetconnection">No Internet connection!</string>
 </resources>

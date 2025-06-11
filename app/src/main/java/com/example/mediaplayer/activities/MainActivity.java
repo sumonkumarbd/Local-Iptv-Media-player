@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String DISCLAIMER_ACCEPTED = "disclaimer_accepted";
     private static final String IPTV_PREFS = "iptv_prefs";
 
+    IPTVFragment iptvFragment;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
@@ -67,15 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private void showComplianceDisclaimer() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Legal Compliance Notice")
-                .setMessage("IMPORTANT LEGAL DISCLAIMER:\n\n" +
-                        "• This media player is a neutral tool for playing your own content\n" +
-                        "• You are solely responsible for ensuring all content you play is legally obtained\n" +
-                        "• Do not use this app to access pirated, copyrighted, or unauthorized content\n" +
-                        "• IPTV streams must be from legitimate, authorized sources only\n" +
-                        "• We do not provide, host, or facilitate access to any content\n" +
-                        "• Use of this app for illegal activities is strictly prohibited\n" +
-                        "• Content streaming may consume significant data - check your plan\n\n" +
-                        "By continuing, you acknowledge your responsibility for legal compliance.")
+                .setMessage(R.string.disclaimer_text)
                 .setPositiveButton("I Understand & Accept", (dialog, which) -> {
                     disclaimerAccepted = true;
                     saveDisclaimerAcceptance();
@@ -178,13 +171,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupTabs() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         adapter.addFragment(new LocalFilesFragment(), "Local Files");
-        adapter.addFragment(new IPTVFragment(), "IPTV");
+
+        iptvFragment = new IPTVFragment(); // keep reference
+        adapter.addFragment(iptvFragment, "IPTV");
+
         adapter.addFragment(new PlayerFragment(), "Player");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                if (adapter.getPageTitle(position).equals("IPTV") && iptvFragment != null) {
+                    iptvFragment.checkInternetAndToast(); // call method inside IPTVFragment
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
+
 
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
