@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Media Player</string>
+    <string name="app_name">CastSphere</string>
     <string name="local_files">Local Files</string>
     <string name="iptv_streams">IPTV Streams</string>
     <string name="player">Player</string>

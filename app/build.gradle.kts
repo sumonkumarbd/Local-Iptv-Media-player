@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace = "com.feed.mediaplayer"
+    namespace = "com.feed.sphere"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.feed.mediaplayer"
-        minSdk = 24
+        applicationId = "com.feed.sphere"
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
