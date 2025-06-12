@@ -1,5 +1,6 @@
 package com.feed.sphere.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.feed.sphere.Interface.OnLoginStatusChangedListener;
 import com.feed.sphere.R;
+import com.feed.sphere.activities.MainActivity;
 import com.feed.sphere.adapters.IPTVPagerAdapter;
 import com.feed.sphere.api.IPTVService;
 import com.feed.sphere.utils.NetworkUtil;
@@ -196,13 +199,19 @@ public class IPTVFragment extends Fragment {
         String password = prefs.getString("password", "");
         boolean isXUI = prefs.getBoolean("is_xui", false);
 
-        if (!url.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
+        boolean isLoggedIn = !url.isEmpty() && !username.isEmpty() && !password.isEmpty();
+
+        if (isLoggedIn) {
             // User is logged in
             iptvService = new IPTVService(url, username, password, isXUI);
             showContent();
+            if (loginStatusListener != null) {
+                ((MainActivity) requireActivity()).onLoginStatusChanged(true);
+            }
         } else {
             // User needs to login
             showLoginForm();
+            ((MainActivity) requireActivity()).onLoginStatusChanged(false);
         }
     }
 
@@ -419,4 +428,17 @@ public class IPTVFragment extends Fragment {
     }
 
 
-}
+    private OnLoginStatusChangedListener loginStatusListener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnLoginStatusChangedListener) {
+            loginStatusListener = (OnLoginStatusChangedListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement OnLoginStatusChangedListener");
+        }
+    }
+
+
+}//main

@@ -33,6 +33,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.feed.sphere.Interface.OnLoginStatusChangedListener;
 import com.feed.sphere.api.IPTVService;
 import com.feed.sphere.fragments.IPTVFragment;
 import com.feed.sphere.fragments.LocalFilesFragment;
@@ -40,7 +41,7 @@ import com.feed.sphere.fragments.PlayerFragment;
 import com.feed.sphere.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , OnLoginStatusChangedListener {
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final String PREFS_NAME = "MediaPlayerPrefs";
     private static final String DISCLAIMER_ACCEPTED = "disclaimer_accepted";
@@ -254,6 +255,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         iptvFragment = null;
         playerFragment = null;
 
+        // Update navigation drawer menu (hide account group)
+        onLoginStatusChanged(false);
+
         // Load local files fragment again
         loadLocalFilesFragment();
 
@@ -354,5 +358,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             Toast.makeText(this, "Please login to Network Stream first", Toast.LENGTH_SHORT).show();
         }
+
     }
-}
+
+
+    private Boolean pendingLoginStatus = null;
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
+
+        if (pendingLoginStatus != null) {
+            onLoginStatusChanged(pendingLoginStatus);
+            pendingLoginStatus = null;
+        }
+
+        return true;
+    }
+
+
+    public void onLoginStatusChanged(boolean isLoggedIn) {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            Menu menu = navigationView.getMenu();
+            menu.setGroupVisible(R.id.account_menu_group, isLoggedIn);
+        }else {
+            Log.d("MainActivity", "navigationView is null");
+        }
+    }
+
+
+
+
+
+
+
+}//Main

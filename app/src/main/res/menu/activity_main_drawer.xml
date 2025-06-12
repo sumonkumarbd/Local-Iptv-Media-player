@@ -19,7 +19,9 @@
             android:title="@string/player" />
     </group>
 
-    <group android:id="@+id/account_menu_group">
+    <group android:id="@+id/account_menu_group"
+        android:visible="false"
+        >
         <item
             android:title="@string/account">
             <menu android:id="@+id/account_menu">
