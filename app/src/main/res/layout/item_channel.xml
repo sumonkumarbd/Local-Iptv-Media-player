@@ -22,25 +22,41 @@
             android:contentDescription="Channel icon"
             android:scaleType="fitCenter" />
 
-        <TextView
-            android:id="@+id/tvChannelName"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:textAppearance="?attr/textAppearanceSubtitle1" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvChannelDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/channel_description"
-            android:textSize="12sp"
-            android:textColor="@color/text_secondary"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:layout_marginTop="2dp"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/tvChannelName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+            <TextView
+                android:id="@+id/tvChannelDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/channel_description"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginTop="2dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnFavorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Add to favorites"
+            android:padding="12dp"
+            android:src="@drawable/ic_favorite_border" />
 
     </LinearLayout>
 

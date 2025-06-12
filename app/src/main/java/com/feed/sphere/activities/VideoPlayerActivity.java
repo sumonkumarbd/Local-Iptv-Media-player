@@ -31,6 +31,7 @@ import com.feed.sphere.R;
 import com.feed.sphere.adapters.ChannelListAdapter;
 import com.feed.sphere.models.Channel;
 import com.feed.sphere.api.IPTVService;
+import com.feed.sphere.utils.FavoriteManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +59,15 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
     private IPTVService iptvService;
     private boolean isChannelListVisible = true;
     private boolean isControllerVisible = false;
+    private FavoriteManager favoriteManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+        // Initialize FavoriteManager
+        favoriteManager = FavoriteManager.getInstance(this);
 
         // Get IPTVService from intent
         iptvService = (IPTVService) getIntent().getSerializableExtra("iptv_service");
@@ -132,9 +137,12 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
 
     private void setupChannelList() {
         if (channelList != null && !channelList.isEmpty()) {
-            channelAdapter = new ChannelListAdapter(channelList, this);
+            channelAdapter = new ChannelListAdapter(channelList, this, favoriteManager);
             recyclerViewChannels.setLayoutManager(new LinearLayoutManager(this));
             recyclerViewChannels.setAdapter(channelAdapter);
+
+            // Load favorites for the channels
+            favoriteManager.loadFavorites(channelList);
 
             // Highlight current channel
             channelAdapter.setSelectedPosition(currentChannelIndex);

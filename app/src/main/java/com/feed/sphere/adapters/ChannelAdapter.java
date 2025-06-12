@@ -3,6 +3,7 @@ package com.feed.sphere.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,20 +13,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.feed.sphere.R;
 import com.feed.sphere.models.Channel;
+import com.feed.sphere.utils.FavoriteManager;
 
 import java.util.List;
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelViewHolder> {
     private final List<Channel> channels;
     private final OnChannelClickListener listener;
+    private final FavoriteManager favoriteManager;
 
     public interface OnChannelClickListener {
         void onChannelClick(Channel channel);
     }
 
-    public ChannelAdapter(List<Channel> channels, OnChannelClickListener listener) {
+    public ChannelAdapter(List<Channel> channels, OnChannelClickListener listener, FavoriteManager favoriteManager) {
         this.channels = channels;
         this.listener = listener;
+        this.favoriteManager = favoriteManager;
     }
 
     @NonNull
@@ -50,11 +54,13 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelV
     class ChannelViewHolder extends RecyclerView.ViewHolder {
         private final ImageView ivChannelIcon;
         private final TextView tvChannelName;
+        private final ImageButton btnFavorite;
 
         ChannelViewHolder(@NonNull View itemView) {
             super(itemView);
             ivChannelIcon = itemView.findViewById(R.id.ivChannelIcon);
             tvChannelName = itemView.findViewById(R.id.tvChannelName);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
         }
 
         void bind(Channel channel) {
@@ -71,7 +77,19 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelV
                 ivChannelIcon.setImageResource(R.drawable.ic_channel_placeholder);
             }
 
+            // Set favorite button state
+            updateFavoriteButton(channel);
+
+            // Set click listeners
             itemView.setOnClickListener(v -> listener.onChannelClick(channel));
+            btnFavorite.setOnClickListener(v -> {
+                favoriteManager.toggleFavorite(channel);
+                updateFavoriteButton(channel);
+            });
+        }
+
+        private void updateFavoriteButton(Channel channel) {
+            btnFavorite.setImageResource(channel.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
         }
     }
 }

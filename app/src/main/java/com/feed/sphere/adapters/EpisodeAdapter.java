@@ -77,9 +77,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
             // Set click listener to play episode
             itemView.setOnClickListener(v -> {
                 String streamUrl = iptvService.getSeriesUrl(
-                    episode.getId(),
-                    episode.getContainerExtension() != null ? episode.getContainerExtension() : "mp4"
-                );
+                        episode.getId(),
+                        episode.getContainerExtension() != null ? episode.getContainerExtension() : "mp4");
 
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
                 intent.putExtra("media_path", streamUrl);

@@ -3,6 +3,7 @@ package com.feed.sphere.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -11,20 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.feed.sphere.R;
 import com.feed.sphere.models.Channel;
+import com.feed.sphere.utils.FavoriteManager;
 import java.util.List;
 
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ChannelViewHolder> {
     private List<Channel> channels;
     private OnChannelClickListener listener;
     private int selectedPosition = -1;
+    private final FavoriteManager favoriteManager;
 
     public interface OnChannelClickListener {
         void onChannelClick(Channel channel, int position);
     }
 
-    public ChannelListAdapter(List<Channel> channels, OnChannelClickListener listener) {
+    public ChannelListAdapter(List<Channel> channels, OnChannelClickListener listener,
+            FavoriteManager favoriteManager) {
         this.channels = channels;
         this.listener = listener;
+        this.favoriteManager = favoriteManager;
     }
 
     public void setSelectedPosition(int position) {
@@ -63,6 +68,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         private ImageView ivChannelLogo;
         private TextView tvChannelName;
         private TextView tvChannelDescription;
+        private ImageButton btnFavorite;
         private View itemView;
 
         public ChannelViewHolder(@NonNull View itemView) {
@@ -71,11 +77,21 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             ivChannelLogo = itemView.findViewById(R.id.ivChannelIcon);
             tvChannelName = itemView.findViewById(R.id.tvChannelName);
             tvChannelDescription = itemView.findViewById(R.id.tvChannelDescription);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onChannelClick(channels.get(position), position);
+                }
+            });
+
+            btnFavorite.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Channel channel = channels.get(position);
+                    favoriteManager.toggleFavorite(channel);
+                    updateFavoriteButton(channel);
                 }
             });
         }
@@ -107,6 +123,9 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
                 ivChannelLogo.setImageResource(R.drawable.ic_tv_placeholder);
             }
 
+            // Update favorite button state
+            updateFavoriteButton(channel);
+
             // Highlight selected channel
             if (isSelected) {
                 itemView.setBackgroundColor(
@@ -117,6 +136,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
                 itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), android.R.color.transparent));
                 tvChannelName.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.default_channel_text));
             }
+        }
+
+        private void updateFavoriteButton(Channel channel) {
+            btnFavorite.setImageResource(channel.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
         }
     }
 }

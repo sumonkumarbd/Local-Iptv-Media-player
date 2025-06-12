@@ -22,6 +22,7 @@ import com.feed.sphere.adapters.ChannelAdapter;
 import com.feed.sphere.api.IPTVService;
 import com.feed.sphere.models.Category;
 import com.feed.sphere.models.Channel;
+import com.feed.sphere.utils.FavoriteManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class LiveTVFragment extends Fragment {
     private IPTVService iptvService;
     private List<Category> categories = new ArrayList<>();
     private List<Channel> channels = new ArrayList<>();
+    private FavoriteManager favoriteManager;
 
     public static LiveTVFragment newInstance(IPTVService service) {
         LiveTVFragment fragment = new LiveTVFragment();
@@ -56,6 +58,7 @@ public class LiveTVFragment extends Fragment {
         if (getArguments() != null) {
             iptvService = (IPTVService) getArguments().getSerializable(ARG_IPTV_SERVICE);
         }
+        favoriteManager = FavoriteManager.getInstance(requireContext());
     }
 
     @Nullable
@@ -82,7 +85,7 @@ public class LiveTVFragment extends Fragment {
         rvCategories.setAdapter(categoryAdapter);
 
         // Setup Channels RecyclerView
-        channelAdapter = new ChannelAdapter(channels, this::onChannelSelected);
+        channelAdapter = new ChannelAdapter(channels, this::onChannelSelected, favoriteManager);
         rvChannels.setLayoutManager(new LinearLayoutManager(getContext()));
         rvChannels.setAdapter(channelAdapter);
     }
@@ -134,6 +137,10 @@ public class LiveTVFragment extends Fragment {
                     requireActivity().runOnUiThread(() -> {
                         channels.clear();
                         channels.addAll(categoryChannels);
+
+                        // Load favorites for the channels
+                        favoriteManager.loadFavorites(channels);
+
                         channelAdapter.notifyDataSetChanged();
                         showLoading(false);
 

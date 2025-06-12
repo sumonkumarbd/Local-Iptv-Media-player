@@ -16,6 +16,7 @@ public class Channel implements Parcelable {
     private final String tvArchive;
     private final String directSource;
     private final String tvArchiveDuration;
+    private boolean isFavorite;
 
     public Channel(String streamId, String name, String streamIcon, String epgChannelId,
             String added, String categoryId, String customSid, String tvArchive,
@@ -30,6 +31,7 @@ public class Channel implements Parcelable {
         this.tvArchive = tvArchive;
         this.directSource = directSource;
         this.tvArchiveDuration = tvArchiveDuration;
+        this.isFavorite = false;
     }
 
     protected Channel(Parcel in) {
@@ -43,6 +45,7 @@ public class Channel implements Parcelable {
         tvArchive = in.readString();
         directSource = in.readString();
         tvArchiveDuration = in.readString();
+        isFavorite = in.readByte() != 0;
     }
 
     public static final Creator<Channel> CREATOR = new Creator<Channel>() {
@@ -97,6 +100,14 @@ public class Channel implements Parcelable {
         return tvArchiveDuration;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -120,5 +131,6 @@ public class Channel implements Parcelable {
         dest.writeString(tvArchive);
         dest.writeString(directSource);
         dest.writeString(tvArchiveDuration);
+        dest.writeByte((byte) (isFavorite ? 1 : 0));
     }
 }
