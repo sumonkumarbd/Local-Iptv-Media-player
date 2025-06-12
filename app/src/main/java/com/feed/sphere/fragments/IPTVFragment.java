@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -21,9 +22,9 @@ import com.android.volley.toolbox.Volley;
 import com.feed.sphere.R;
 import com.feed.sphere.adapters.IPTVPagerAdapter;
 import com.feed.sphere.api.IPTVService;
-import com.feed.sphere.models.Server;
 import com.feed.sphere.utils.NetworkUtil;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -151,15 +152,11 @@ public class IPTVFragment extends Fragment {
                 SUPABASE_URL,
                 null,
                 response -> {
-                    Log.d(TAG, "Response: " + response.toString());
-
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject obj = response.getJSONObject(i);
                             String getBaseUrl = obj.getString("base_url");
                             boolean isActive = obj.getBoolean("is_active");
-
-                            Log.d("Supabase", "Base URL: " + getBaseUrl + " Is Active: " + isActive);
 
                             // ✅ Callback here
                             callback.onDataFetched(getBaseUrl, isActive);
@@ -190,10 +187,6 @@ public class IPTVFragment extends Fragment {
     public interface SupabaseCallback {
         void onDataFetched(String server_baseUrl, boolean isActive);
     }
-
-
-
-
 
 
     private void checkLoginStatus() {
@@ -424,4 +417,6 @@ public class IPTVFragment extends Fragment {
             showLoginForm();
         }
     }
+
+
 }

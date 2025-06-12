@@ -2,6 +2,7 @@ package com.feed.sphere.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -9,12 +10,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -30,6 +33,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.feed.sphere.api.IPTVService;
 import com.feed.sphere.fragments.IPTVFragment;
 import com.feed.sphere.fragments.LocalFilesFragment;
 import com.feed.sphere.fragments.PlayerFragment;
@@ -261,17 +265,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
-        builder.setTitle(R.string.app_name)
-                .setMessage(version+"\n\n" +
-                        "A legal media player for your personal content.\n\n" +
-                        "Features:\n" +
-                        "• Local file playback\n" +
-                        "• Network streaming support\n" +
-                        "• Multiple format support\n" +
-                        "• User-friendly interface\n\n" +
-                        "Remember to only use legal content sources!")
-                .setPositiveButton("OK", null)
-                .show();
+            builder.setTitle(R.string.app_name)
+                    .setMessage(version + "\n\n" +
+                            "A legal media player for your personal content.\n\n" +
+                            "Features:\n" +
+                            "• Local file playback\n" +
+                            "• Network streaming support\n" +
+                            "• Multiple format support\n" +
+                            "• User-friendly interface\n\n" +
+                            "Remember to only use legal content sources!")
+                    .setPositiveButton("OK", null)
+                    .show();
 
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -310,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[] { Manifest.permission.READ_EXTERNAL_STORAGE },
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     PERMISSION_REQUEST_CODE);
         }
     }
@@ -342,13 +346,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-private void showUserInfo() {
-    if (iptvFragment != null && iptvFragment.getIPTVService() != null) {
-        Intent intent = new Intent(this, UserInfoActivity.class);
-        intent.putExtra("iptv_service", iptvFragment.getIPTVService());
-        startActivity(intent);
-    } else {
-        Toast.makeText(this, "Please login to IPTV service first", Toast.LENGTH_SHORT).show();
+    private void showUserInfo() {
+        if (iptvFragment != null && iptvFragment.getIPTVService() != null) {
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            intent.putExtra("iptv_service", iptvFragment.getIPTVService());
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Please login to Network Stream first", Toast.LENGTH_SHORT).show();
+        }
     }
-}
 }

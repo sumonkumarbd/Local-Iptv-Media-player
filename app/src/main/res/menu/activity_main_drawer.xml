@@ -19,18 +19,22 @@
             android:title="@string/player" />
     </group>
 
-    <item android:title="@string/account">
-        <menu>
-            <item
-                android:id="@+id/nav_user_info"
-                android:icon="@drawable/ic_person"
-                android:title="@string/user_information" />
-            <item
-                android:id="@+id/action_logout"
-                android:icon="@drawable/ic_logout"
-                android:title="@string/menu_logout" />
-        </menu>
-    </item>
+    <group android:id="@+id/account_menu_group">
+        <item
+            android:title="@string/account">
+            <menu android:id="@+id/account_menu">
+                <item
+                    android:id="@+id/nav_user_info"
+                    android:icon="@drawable/ic_person"
+                    android:title="@string/user_information" />
+                <item
+                    android:id="@+id/action_logout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/menu_logout" />
+            </menu>
+        </item>
+    </group>
+
 
     <item android:title="@string/about">
         <menu>

@@ -1,6 +1,7 @@
 package com.feed.sphere.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -100,12 +101,24 @@ public class UserInfoActivity extends AppCompatActivity {
     private void displayUserInfo(UserInfo userInfo) {
         tvUsername.setText(userInfo.getUsername());
         tvStatus.setText(userInfo.getStatus());
-        tvExpDate.setText(formatDate(userInfo.getExpDate()));
         tvTrialStatus.setText(userInfo.isTrial() ? "Trial Account" : "Full Account");
         tvActiveConnections.setText(userInfo.isActiveCons() ? "Active" : "Inactive");
         tvMaxConnections.setText(String.valueOf(userInfo.getMaxConnections()));
         tvCreatedAt.setText(formatDate(userInfo.getCreatedAt()));
         tvOutputFormats.setText(userInfo.getAllowedOutputFormats());
+
+        String expDateRaw = userInfo.getExpDate();
+
+        if (expDateRaw != null && !expDateRaw.equalsIgnoreCase("null") && !expDateRaw.trim().isEmpty()) {
+            try {
+                int timestamp = Integer.parseInt(expDateRaw);
+                tvExpDate.setText(formatDate(timestamp));
+            } catch (NumberFormatException e) {
+                tvExpDate.setText("Invalid date");
+            }
+        } else {
+            tvExpDate.setText("N/A");
+        }
     }
 
 
