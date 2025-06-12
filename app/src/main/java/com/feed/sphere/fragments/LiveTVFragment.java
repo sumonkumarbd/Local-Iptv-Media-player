@@ -1,12 +1,14 @@
 package com.feed.sphere.fragments;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,7 @@ import com.feed.sphere.utils.FavoriteManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.json.JSONException;
 
@@ -36,12 +39,16 @@ public class LiveTVFragment extends Fragment {
 
     private RecyclerView rvCategories;
     private RecyclerView rvChannels;
+    private RecyclerView rvFavorites;
     private ProgressBar progressBar;
+    private TextView tvFavoritesTitle;
     private CategoryAdapter categoryAdapter;
     private ChannelAdapter channelAdapter;
+    private ChannelAdapter favoritesAdapter;
     private IPTVService iptvService;
     private List<Category> categories = new ArrayList<>();
     private List<Channel> channels = new ArrayList<>();
+    private List<Channel> favoriteChannels = new ArrayList<>();
     private FavoriteManager favoriteManager;
 
     public static LiveTVFragment newInstance(IPTVService service) {
@@ -75,7 +82,9 @@ public class LiveTVFragment extends Fragment {
     private void initializeViews(View view) {
         rvCategories = view.findViewById(R.id.rvCategories);
         rvChannels = view.findViewById(R.id.rvChannels);
+        rvFavorites = view.findViewById(R.id.rvFavorites);
         progressBar = view.findViewById(R.id.progressBar);
+        tvFavoritesTitle = view.findViewById(R.id.tvFavoritesTitle);
     }
 
     private void setupRecyclerViews() {
@@ -86,8 +95,29 @@ public class LiveTVFragment extends Fragment {
 
         // Setup Channels RecyclerView
         channelAdapter = new ChannelAdapter(channels, this::onChannelSelected, favoriteManager);
-        rvChannels.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvChannels.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rvChannels.setAdapter(channelAdapter);
+
+        // Setup Favorites RecyclerView
+        favoritesAdapter = new ChannelAdapter(favoriteChannels, this::onChannelSelected, favoriteManager);
+        rvFavorites.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rvFavorites.setAdapter(favoritesAdapter);
+    }
+
+    private void updateFavoritesList() {
+        favoriteChannels.clear();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            favoriteChannels.addAll(channels.stream()
+                    .filter(Channel::isFavorite)
+                    .collect(Collectors.toList()));
+        }
+
+        // Update visibility of favorites section
+        boolean hasFavorites = !favoriteChannels.isEmpty();
+        tvFavoritesTitle.setVisibility(hasFavorites ? View.VISIBLE : View.GONE);
+        rvFavorites.setVisibility(hasFavorites ? View.VISIBLE : View.GONE);
+
+        favoritesAdapter.notifyDataSetChanged();
     }
 
     private void loadCategories() {
@@ -142,6 +172,7 @@ public class LiveTVFragment extends Fragment {
                         favoriteManager.loadFavorites(channels);
 
                         channelAdapter.notifyDataSetChanged();
+                        updateFavoritesList();
                         showLoading(false);
 
                         if (categoryChannels.isEmpty()) {
@@ -192,6 +223,7 @@ public class LiveTVFragment extends Fragment {
         // Clear the data lists
         categories.clear();
         channels.clear();
+        favoriteChannels.clear();
 
         // Notify adapters
         if (categoryAdapter != null) {
@@ -199,6 +231,9 @@ public class LiveTVFragment extends Fragment {
         }
         if (channelAdapter != null) {
             channelAdapter.notifyDataSetChanged();
+        }
+        if (favoritesAdapter != null) {
+            favoritesAdapter.notifyDataSetChanged();
         }
 
         // Hide loading indicator

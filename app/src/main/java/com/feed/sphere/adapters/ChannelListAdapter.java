@@ -19,7 +19,8 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
     private List<Channel> channels;
     private OnChannelClickListener listener;
     private int selectedPosition = -1;
-    private final FavoriteManager favoriteManager;
+    private FavoriteManager favoriteManager;
+    private boolean isHorizontal = false;
 
     public interface OnChannelClickListener {
         void onChannelClick(Channel channel, int position);
@@ -45,11 +46,15 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         }
     }
 
+    public void setHorizontal(boolean horizontal) {
+        isHorizontal = horizontal;
+    }
+
     @NonNull
     @Override
     public ChannelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_channel, parent, false);
+        int layoutRes = isHorizontal ? R.layout.item_channel_favorite : R.layout.item_channel;
+        View view = LayoutInflater.from(parent.getContext()).inflate(layoutRes, parent, false);
         return new ChannelViewHolder(view);
     }
 
@@ -74,10 +79,12 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         public ChannelViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
-            ivChannelLogo = itemView.findViewById(R.id.ivChannelIcon);
+            ivChannelLogo = itemView.findViewById(R.id.ivChannelLogo);
             tvChannelName = itemView.findViewById(R.id.tvChannelName);
-            tvChannelDescription = itemView.findViewById(R.id.tvChannelDescription);
             btnFavorite = itemView.findViewById(R.id.btnFavorite);
+
+            // Only find description if it exists in the layout
+            tvChannelDescription = itemView.findViewById(R.id.tvChannelDescription);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
@@ -103,8 +110,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
             // Set channel name
             tvChannelName.setText(channel.getName() != null ? channel.getName() : "");
 
-            // Hide description since Channel class doesn't have description
-            tvChannelDescription.setVisibility(View.GONE);
+            // Hide description if it exists
+            if (tvChannelDescription != null) {
+                tvChannelDescription.setVisibility(View.GONE);
+            }
 
             // Load channel logo
             String streamIcon = channel.getStreamIcon();
@@ -139,7 +148,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
         }
 
         private void updateFavoriteButton(Channel channel) {
-            btnFavorite.setImageResource(channel.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_border);
+            if (btnFavorite != null) {
+                btnFavorite.setImageResource(
+                        channel.isFavorite() ? R.drawable.ic_favorite : R.drawable.ic_favorite_outline);
+            }
         }
     }
 }

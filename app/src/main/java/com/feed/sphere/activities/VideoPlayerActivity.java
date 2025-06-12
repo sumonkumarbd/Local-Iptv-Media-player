@@ -2,6 +2,7 @@ package com.feed.sphere.activities;
 
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.feed.sphere.utils.FavoriteManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.media3.exoplayer.DefaultLoadControl;
 
@@ -48,6 +50,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
     private ImageButton btnToggleList;
     private LinearLayout channelListContainer;
     private RecyclerView recyclerViewChannels;
+    private RecyclerView recyclerViewFavorites;
+    private TextView tvFavoritesTitle;
     private ExoPlayer player;
     private String mediaPath;
     private String mediaTitle;
@@ -55,11 +59,13 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
     private boolean isFullscreen = false;
     private List<Channel> channelList;
     private ChannelListAdapter channelAdapter;
+    private ChannelListAdapter favoritesAdapter;
     private int currentChannelIndex = 0;
     private IPTVService iptvService;
     private boolean isChannelListVisible = true;
     private boolean isControllerVisible = false;
     private FavoriteManager favoriteManager;
+    private List<Channel> favoriteChannels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +123,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
         btnToggleList = findViewById(R.id.btnToggleList);
         channelListContainer = findViewById(R.id.channelListContainer);
         recyclerViewChannels = findViewById(R.id.recyclerViewChannels);
+        recyclerViewFavorites = findViewById(R.id.recyclerViewFavorites);
+        tvFavoritesTitle = findViewById(R.id.tvFavoritesTitle);
 
         // Set title
         if (mediaTitle != null) {
@@ -137,12 +145,21 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
 
     private void setupChannelList() {
         if (channelList != null && !channelList.isEmpty()) {
+            // Setup main channel list
             channelAdapter = new ChannelListAdapter(channelList, this, favoriteManager);
             recyclerViewChannels.setLayoutManager(new LinearLayoutManager(this));
             recyclerViewChannels.setAdapter(channelAdapter);
 
+            // Setup favorites list
+            favoritesAdapter = new ChannelListAdapter(favoriteChannels, this, favoriteManager);
+            favoritesAdapter.setHorizontal(true);
+            recyclerViewFavorites
+                    .setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            recyclerViewFavorites.setAdapter(favoritesAdapter);
+
             // Load favorites for the channels
             favoriteManager.loadFavorites(channelList);
+            updateFavoritesList();
 
             // Highlight current channel
             channelAdapter.setSelectedPosition(currentChannelIndex);
@@ -153,6 +170,22 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
             // Hide channel list if no channels available
             channelListContainer.setVisibility(View.GONE);
         }
+    }
+
+    private void updateFavoritesList() {
+        favoriteChannels.clear();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            favoriteChannels.addAll(channelList.stream()
+                    .filter(Channel::isFavorite)
+                    .collect(Collectors.toList()));
+        }
+
+        // Update visibility of favorites section
+        boolean hasFavorites = !favoriteChannels.isEmpty();
+        tvFavoritesTitle.setVisibility(hasFavorites ? View.VISIBLE : View.GONE);
+        recyclerViewFavorites.setVisibility(hasFavorites ? View.VISIBLE : View.GONE);
+
+        favoritesAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -168,6 +201,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements ChannelLis
 
         // Highlight selected channel
         channelAdapter.setSelectedPosition(position);
+        updateFavoritesList();
 
         // Stop current player and setup new one
         if (player != null) {

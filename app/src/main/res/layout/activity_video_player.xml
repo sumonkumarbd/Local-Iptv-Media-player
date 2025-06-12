@@ -45,6 +45,30 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/tvFavoritesTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/channel_list_header_background"
+            android:padding="16dp"
+            android:text="Favorites"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_color" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewChannels"
             android:layout_width="match_parent"

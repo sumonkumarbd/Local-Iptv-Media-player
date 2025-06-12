@@ -36,7 +36,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelV
     @Override
     public ChannelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_channel, parent, false);
+                .inflate(R.layout.item_channel_favorite, parent, false);
         return new ChannelViewHolder(view);
     }
 
@@ -58,7 +58,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ChannelV
 
         ChannelViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivChannelIcon = itemView.findViewById(R.id.ivChannelIcon);
+            ivChannelIcon = itemView.findViewById(R.id.ivChannelLogo);
             tvChannelName = itemView.findViewById(R.id.tvChannelName);
             btnFavorite = itemView.findViewById(R.id.btnFavorite);
         }
