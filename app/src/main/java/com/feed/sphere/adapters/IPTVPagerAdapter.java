@@ -11,6 +11,7 @@ import com.feed.sphere.fragments.SeriesFragment;
 
 public class IPTVPagerAdapter extends FragmentStateAdapter {
     private final IPTVFragment parentFragment;
+    private final Fragment[] fragments = new Fragment[3];
 
     public IPTVPagerAdapter(IPTVFragment fragment) {
         super(fragment);
@@ -20,16 +21,22 @@ public class IPTVPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Fragment fragment;
         switch (position) {
             case 0:
-                return LiveTVFragment.newInstance(parentFragment.getIPTVService());
+                fragment = LiveTVFragment.newInstance(parentFragment.getIPTVService());
+                break;
             case 1:
-                return MoviesFragment.newInstance(parentFragment.getIPTVService());
+                fragment = MoviesFragment.newInstance(parentFragment.getIPTVService());
+                break;
             case 2:
-                return SeriesFragment.newInstance(parentFragment.getIPTVService());
+                fragment = SeriesFragment.newInstance(parentFragment.getIPTVService());
+                break;
             default:
                 throw new IllegalArgumentException("Invalid position: " + position);
         }
+        fragments[position] = fragment;
+        return fragment;
     }
 
     @Override
@@ -37,10 +44,19 @@ public class IPTVPagerAdapter extends FragmentStateAdapter {
         return 3;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public boolean containsItem(long itemId) {
+        return itemId >= 0 && itemId < getItemCount();
+    }
+
     public void clearData() {
-        // Clear data in each fragment
         for (int i = 0; i < getItemCount(); i++) {
-            Fragment fragment = parentFragment.getChildFragmentManager().findFragmentByTag("f" + i);
+            Fragment fragment = fragments[i];
             if (fragment instanceof LiveTVFragment) {
                 ((LiveTVFragment) fragment).clearData();
             } else if (fragment instanceof MoviesFragment) {

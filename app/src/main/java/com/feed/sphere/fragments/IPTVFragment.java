@@ -67,13 +67,6 @@ public class IPTVFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        fetchDB((baseUrl, isActive) -> {
-            if (!isActive) {
-                etBaseUrl.setVisibility(View.VISIBLE);
-            }else {
-                etBaseUrl.setVisibility(View.GONE);
-            }
-        });
         return inflater.inflate(R.layout.fragment_iptv, container, false);
     }
 
@@ -81,6 +74,16 @@ public class IPTVFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initializeViews(view);
+
+        // ✅ Safe to call after views are initialized
+        fetchDB((baseUrl, isActive) -> {
+            if (!isActive) {
+                etBaseUrl.setVisibility(View.VISIBLE);
+            } else {
+                etBaseUrl.setVisibility(View.GONE);
+            }
+        });
+
         checkInternet();  // Called only after views are ready
         checkLoginStatus();
     }
@@ -118,6 +121,7 @@ public class IPTVFragment extends Fragment {
     }
 
     private void setupTabLayout() {
+        viewPager.setSaveEnabled(false);  // ✅ This line prevents restoration crash
         pagerAdapter = new IPTVPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
 
@@ -135,6 +139,7 @@ public class IPTVFragment extends Fragment {
             }
         }).attach();
     }
+
 
 
 
