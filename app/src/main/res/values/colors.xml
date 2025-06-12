@@ -45,6 +45,17 @@
     <color name="colorPrimary">#FF6600</color>
     <color name="colorPrimaryDark">#CC5200</color>
     <color name="colorAccent">#FF6600</color>
+
+
+
+    <!-- Channel List Colors -->
+    <color name="channel_list_background">#1A1A1A</color>
+    <color name="channel_list_header_background">#2A2A2A</color>
+    <color name="selected_channel_background">#4CAF50</color>
+    <color name="selected_channel_text">#FFFFFF</color>
+    <color name="default_channel_text">#FFFFFF</color>
+    <color name="channel_description_text">#CCCCCC</color>
+    <color name="divider_color">#444444</color>
 </resources>
 
 

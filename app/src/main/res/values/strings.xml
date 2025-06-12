@@ -82,4 +82,5 @@
     <string name="account">Account</string>
     <string name="user_information">User Information</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="channel_description">Channel Description</string>
 </resources>

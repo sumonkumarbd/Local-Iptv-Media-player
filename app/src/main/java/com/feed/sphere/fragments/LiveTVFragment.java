@@ -114,13 +114,13 @@ public class LiveTVFragment extends Fragment {
                 if (isAdded()) {
                     requireActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        Toast.makeText(getContext(), "Error loading categories: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error loading categories: " + e.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
                     });
                 }
             }
         }).start();
     }
-
 
     private void onCategorySelected(Category category) {
         showLoading(true);
@@ -138,7 +138,8 @@ public class LiveTVFragment extends Fragment {
                         showLoading(false);
 
                         if (categoryChannels.isEmpty()) {
-                            Toast.makeText(getContext(), "No channels found in this category", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "No channels found in this category", Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     });
                 }
@@ -147,13 +148,13 @@ public class LiveTVFragment extends Fragment {
                 if (isAdded()) {
                     requireActivity().runOnUiThread(() -> {
                         showLoading(false);
-                        Toast.makeText(getContext(), "Error loading channels: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error loading channels: " + e.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
                     });
                 }
             }
         }).start();
     }
-
 
     private void onChannelSelected(Channel channel) {
         String streamUrl = iptvService.getLiveStreamUrl(channel.getStreamId(), "m3u8");
@@ -163,6 +164,13 @@ public class LiveTVFragment extends Fragment {
         intent.putExtra("media_path", streamUrl);
         intent.putExtra("media_title", channel.getName());
         intent.putExtra("is_stream", true);
+        intent.putExtra("iptv_service", iptvService);
+
+        // Pass the channel list and current channel index
+        ArrayList<Channel> channelArrayList = new ArrayList<>(channels);
+        intent.putParcelableArrayListExtra("channel_list", channelArrayList);
+        intent.putExtra("current_channel_index", channels.indexOf(channel));
+
         startActivity(intent);
     }
 

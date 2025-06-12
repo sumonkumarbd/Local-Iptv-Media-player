@@ -1,6 +1,11 @@
 package com.feed.sphere.models;
 
-public class Channel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Channel implements Parcelable {
     private final String streamId;
     private final String name;
     private final String streamIcon;
@@ -26,6 +31,31 @@ public class Channel {
         this.directSource = directSource;
         this.tvArchiveDuration = tvArchiveDuration;
     }
+
+    protected Channel(Parcel in) {
+        streamId = in.readString();
+        name = in.readString();
+        streamIcon = in.readString();
+        epgChannelId = in.readString();
+        added = in.readString();
+        categoryId = in.readString();
+        customSid = in.readString();
+        tvArchive = in.readString();
+        directSource = in.readString();
+        tvArchiveDuration = in.readString();
+    }
+
+    public static final Creator<Channel> CREATOR = new Creator<Channel>() {
+        @Override
+        public Channel createFromParcel(Parcel in) {
+            return new Channel(in);
+        }
+
+        @Override
+        public Channel[] newArray(int size) {
+            return new Channel[size];
+        }
+    };
 
     public String getStreamId() {
         return streamId;
@@ -67,8 +97,28 @@ public class Channel {
         return tvArchiveDuration;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(streamId);
+        dest.writeString(name);
+        dest.writeString(streamIcon);
+        dest.writeString(epgChannelId);
+        dest.writeString(added);
+        dest.writeString(categoryId);
+        dest.writeString(customSid);
+        dest.writeString(tvArchive);
+        dest.writeString(directSource);
+        dest.writeString(tvArchiveDuration);
     }
 }

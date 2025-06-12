@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.feed.sphere.R;
 import com.feed.sphere.models.IPTVStream;
 import java.util.List;
@@ -39,11 +40,11 @@ public class IPTVAdapter extends ArrayAdapter<IPTVStream> {
         typeText.setText(stream.getStreamType().toUpperCase());
 
         // TODO: Load thumbnail if available
-        // You can use an image loading library like Glide or Picasso here
-        // if (stream.getThumbnailUrl() != null && !stream.getThumbnailUrl().isEmpty())
-        // {
-        // Glide.with(context).load(stream.getThumbnailUrl()).into(thumbnailImage);
-        // }
+//         You can use an image loading library like Glide or Picasso here
+         if (stream.getThumbnailUrl() != null && !stream.getThumbnailUrl().isEmpty())
+         {
+         Glide.with(context).load(stream.getThumbnailUrl()).into(thumbnailImage);
+         }
 
         return convertView;
     }
