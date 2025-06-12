@@ -53,6 +53,13 @@
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
+
+        <activity
+            android:name=".activities.UserInfoActivity"
+            android:exported="false"
+            android:label="User Information"
+            android:parentActivityName=".activities.MainActivity" />
+
     </application>
 
 </manifest>

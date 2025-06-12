@@ -159,7 +159,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadIPTVFragment();
         } else if (id == R.id.nav_player) {
             loadPlayerFragment();
-        }else if (id == R.id.action_about) {
+        } else if (id == R.id.nav_user_info) {
+            showUserInfo();
+        } else if (id == R.id.action_about) {
             showAboutDialog();
         } else if (id == R.id.privacy_policy) {
             showPrivacyPolicy();
@@ -338,4 +340,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
+
+
+private void showUserInfo() {
+    if (iptvFragment != null && iptvFragment.getIPTVService() != null) {
+        Intent intent = new Intent(this, UserInfoActivity.class);
+        intent.putExtra("iptv_service", iptvFragment.getIPTVService());
+        startActivity(intent);
+    } else {
+        Toast.makeText(this, "Please login to IPTV service first", Toast.LENGTH_SHORT).show();
+    }
+}
 }

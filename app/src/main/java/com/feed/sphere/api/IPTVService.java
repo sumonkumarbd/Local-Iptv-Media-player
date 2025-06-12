@@ -156,7 +156,7 @@ public class IPTVService implements Serializable {
         return new UserInfo(
                 userInfo.getString("username"),
                 userInfo.getString("status"),
-                userInfo.getString("exp_date"),
+                userInfo.getInt("exp_date"),
                 parseBoolean(userInfo.getString("is_trial")),
                 parseBoolean(userInfo.getString("active_cons")),
                 userInfo.getInt("created_at"),

@@ -8,35 +8,41 @@
         <item
             android:id="@+id/nav_local_files"
             android:icon="@drawable/ic_folder"
-            android:title="Local Files" />
+            android:title="@string/local_files" />
         <item
             android:id="@+id/nav_iptv"
             android:icon="@drawable/ic_tv"
-            android:title="Network Stream" />
+            android:title="@string/network_stream" />
         <item
             android:id="@+id/nav_player"
             android:icon="@drawable/ic_play"
-            android:title="Player" />
+            android:title="@string/player" />
     </group>
 
-    <group android:menuCategory="system">
-        <item
-            android:id="@+id/action_about"
-            android:title="About"
-            android:icon="@android:drawable/ic_dialog_info"
-            app:showAsAction="never" />
+    <item android:title="@string/account">
+        <menu>
+            <item
+                android:id="@+id/nav_user_info"
+                android:icon="@drawable/ic_person"
+                android:title="@string/user_information" />
+            <item
+                android:id="@+id/action_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/menu_logout" />
+        </menu>
+    </item>
 
-        <item
-            android:id="@+id/privacy_policy"
-            android:title="Privacy Policy"
-            android:icon="@android:drawable/ic_dialog_alert"
-            app:showAsAction="never" />
-
-        <item
-            android:id="@+id/action_logout"
-            android:title="@string/menu_logout"
-            android:icon="@drawable/ic_logout"
-            app:showAsAction="never" />
-    </group>
+    <item android:title="@string/about">
+        <menu>
+            <item
+                android:id="@+id/action_about"
+                android:icon="@drawable/ic_info"
+                android:title="@string/about" />
+            <item
+                android:id="@+id/privacy_policy"
+                android:icon="@drawable/ic_privacy"
+                android:title="@string/privacy_policy" />
+        </menu>
+    </item>
 
 </menu>

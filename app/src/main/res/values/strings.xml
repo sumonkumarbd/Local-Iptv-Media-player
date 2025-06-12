@@ -78,4 +78,8 @@
     <string name="disclaimer_text_format">
     IMPORTANT LEGAL DISCLAIMER:\n\n%s\n\nBy continuing, you acknowledge your responsibility for legal compliance.</string>
     <string name="interNetconnection">No Internet connection!</string>
+    <string name="network_stream">Network Stream</string>
+    <string name="account">Account</string>
+    <string name="user_information">User Information</string>
+    <string name="privacy_policy">Privacy Policy</string>
 </resources>
