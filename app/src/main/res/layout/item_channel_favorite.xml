@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/card_bg"
         android:padding="8dp">
 
         <ImageView
@@ -18,7 +19,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:contentDescription="Channel Logo"
+            android:contentDescription="@string/channel_logo"
             android:scaleType="fitCenter" />
 
         <TextView
@@ -29,7 +30,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="2"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/primary_text"
             android:textSize="12sp" />
 
         <ImageButton
@@ -39,7 +40,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Toggle Favorite"
+            android:contentDescription="@string/toggle_favorite"
             android:padding="2dp"
             android:src="@drawable/ic_favorite_outline" />
 

@@ -14,7 +14,7 @@
     <color name="warning">#FFC107</color>       <!-- Amber -->
 
     <!-- Text Colors -->
-    <color name="primary_text">#212121</color>  <!-- Almost black -->
+    <color name="primary_text">#000000</color>  <!-- Almost black -->
     <color name="secondary_text">#757575</color> <!-- Gray -->
 
     <color name="text_primary">#212121</color>

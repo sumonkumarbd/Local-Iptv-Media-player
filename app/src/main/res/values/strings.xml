@@ -85,4 +85,9 @@
     <string name="channel_description">Channel Description</string>
     <string name="favorites">Favorites</string>
     <string name="toggle_favorite">Toggle Favorite</string>
+    <string name="channel_logo">Channel Logo</string>
+    <string name="categories">Categories</string>
+    <string name="channels">Channels</string>
+    <string name="toggle_channel_list">Toggle Channel List</string>
+    <string name="show_channel_list">Show Channel List</string>
 </resources>

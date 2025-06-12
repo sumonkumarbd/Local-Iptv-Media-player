@@ -53,7 +53,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
     @NonNull
     @Override
     public ChannelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int layoutRes = isHorizontal ? R.layout.item_channel_favorite : R.layout.item_channel;
+        int layoutRes = isHorizontal ? R.layout.item_player_fvt : R.layout.item_channel;
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutRes, parent, false);
         return new ChannelViewHolder(view);
     }

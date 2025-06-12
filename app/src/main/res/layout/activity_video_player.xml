@@ -8,7 +8,7 @@
         android:id="@+id/channelListContainer"
         android:layout_width="300dp"
         android:layout_height="0dp"
-        android:background="@color/background"
+        android:background="@color/black"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Toggle Channel List"
+                android:contentDescription="@string/toggle_channel_list"
                 android:padding="12dp"
                 android:backgroundTint="@color/surface"
                 android:src="@drawable/ic_back" />
@@ -38,8 +38,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="16dp"
                 android:layout_toEndOf="@id/btnFullscreen"
-                android:text="Channels"
-                android:textColor="@color/text_primary"
+                android:text="@string/channels"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -49,10 +49,11 @@
             android:id="@+id/tvFavoritesTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/channel_list_header_background"
-            android:padding="16dp"
-            android:text="Favorites"
-            android:textColor="@color/text_primary"
+            android:paddingVertical="5dp"
+            android:background="@color/cardview_shadow_end_color"
+            android:elevation="5dp"
+            android:text="@string/favorites"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -61,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
+            android:background="@color/black"
             android:paddingTop="8dp"
             android:paddingBottom="8dp" />
 
@@ -95,7 +97,7 @@
         android:layout_height="48dp"
         android:layout_margin="16dp"
         android:background="@drawable/circular_button_background"
-        android:contentDescription="Show Channel List"
+        android:contentDescription="@string/show_channel_list"
         android:elevation="4dp"
         android:padding="12dp"
         android:src="@drawable/ic_list"
