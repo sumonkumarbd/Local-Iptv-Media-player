@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors -->
+    <color name="primary">#FF6600</color>       <!-- VLC Orange -->
+    <color name="primary_dark">#CC5200</color>  <!-- Darker Orange -->
+    <color name="primary_light">#FF8C33</color> <!-- Light Orange -->
+
+    <color name="accent">#FF6600</color>        <!-- Same strong orange accent -->
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>       <!-- Green -->
+    <color name="error">#EF5350</color>         <!-- Lighter Red for Dark BG -->
+    <color name="warning">#FFD54F</color>       <!-- Softer Amber -->
+
+    <!-- Text Colors -->
+    <color name="primary_text">#FFFFFF</color>        <!-- White text -->
+    <color name="secondary_text">#B0B0B0</color>      <!-- Light Gray -->
+
+    <color name="text_primary">#E0E0E0</color>
+    <color name="text_secondary">#A0A0A0</color>
+    <color name="text_hint">#808080</color>
+
+    <!-- Background / Surface -->
+    <color name="background">#121212</color>           <!-- Dark background -->
+    <color name="surface">#1E1E1E</color>
+    <color name="card_background">#2A2A2A</color>       <!-- Darker gray for cards -->
+
+    <!-- System Colors -->
+    <color name="icons">#FFFFFF</color>                <!-- White icons -->
+    <color name="divider">#333333</color>              <!-- Dark divider -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Default Theme Support Colors -->
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="orange">#FF6600</color>
+
+    <!-- Material Theme Mapping -->
+    <color name="colorPrimary">#FF6600</color>
+    <color name="colorPrimaryDark">#CC5200</color>
+    <color name="colorAccent">#FF6600</color>
+
+    <!-- Channel List Colors -->
+    <color name="channel_list_background">#121212</color>
+    <color name="channel_list_header_background">#1E1E1E</color>
+    <color name="selected_channel_background">#388E3C</color> <!-- Slightly darker success -->
+    <color name="selected_channel_text">#FFFFFF</color>
+    <color name="default_channel_text">#DDDDDD</color>
+    <color name="channel_description_text">#AAAAAA</color>
+    <color name="divider_color">#333333</color>
+
+    <color name="item_focused_background">#334455FF</color> <!-- blue-ish translucent -->
+    <color name="item_pressed_background">#223344CC</color> <!-- darker translucent -->
+
+</resources>
+

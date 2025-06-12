@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -135,10 +136,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(R.string.app_name);
+
+            // Enable the navigation (hamburger) icon
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
         }
+
+        // Post a runnable to ensure toolbar is laid out before accessing children
+        toolbar.post(() -> {
+            for (int i = 0; i < toolbar.getChildCount(); i++) {
+                View view = toolbar.getChildAt(i);
+
+                // Identify and modify the hamburger icon (usually an ImageButton)
+                if (view instanceof ImageButton) {
+                    view.setFocusable(true);
+                    view.setFocusableInTouchMode(true);
+                    view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+                    view.setContentDescription("Menu"); // Optional: improves accessibility
+
+                    // Optional: request initial focus on TV
+                    // view.requestFocus();
+
+                    // Optional: handle manual click (in case needed)
+                    view.setOnClickListener(v -> {
+                        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+                        if (drawerLayout != null && !drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                            drawerLayout.openDrawer(GravityCompat.START);
+                        }
+                    });
+
+                    break; // Exit after setting the nav icon
+                }
+            }
+        });
     }
+
+
 
     private void setupNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -10,8 +10,8 @@ android {
         applicationId = "com.feed.sphere"
         minSdk = 21
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,15 +47,21 @@ dependencies {
     implementation(libs.media3.datasource)
     implementation(libs.media3.common)
 
+
+    implementation(libs.leanback)
+    implementation(libs.circleimageview)
+
+
+
     // volley
     implementation(libs.volley)
 
     //Glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.glide)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0") {
         exclude(group = "com.github.bumptech.glide", module = "annotations")
     }
-    implementation("com.github.bumptech.glide:annotations:4.16.0")
+    implementation(libs.annotations)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

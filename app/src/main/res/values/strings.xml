@@ -90,4 +90,13 @@
     <string name="channels">Channels</string>
     <string name="toggle_channel_list">Toggle Channel List</string>
     <string name="show_channel_list">Show Channel List</string>
+    <string name="retry">Retry</string>
+    <string name="series_poster">Series poster</string>
+    <string name="episodes">Episodes</string>
+    <string name="local_media_files">Local Media Files</string>
+    <string name="player_information_will_appear_here">Player information will appear here</string>
+    <string name="type">type</string>
+    <string name="duration">Duration</string>
+    <string name="created_jan_01_2022">Created: Jan 01, 2022</string>
+    <string name="expires">Expires</string>
 </resources>

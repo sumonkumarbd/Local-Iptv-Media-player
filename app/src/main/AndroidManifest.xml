@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- Hardware features -->
+    <uses-feature android:name="android.software.leanback" android:required="false" />
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -61,5 +62,10 @@
             android:parentActivityName=".activities.MainActivity" />
 
     </application>
+
+    <meta-data
+        android:name="com.amazon.tv.launcher"
+        android:resource="@drawable/banner" />
+
 
 </manifest>

@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="16dp"
+    android:viewportWidth="24"
+    android:viewportHeight="16">
+
+    <!-- Simple chip shape -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M2,2h20v12h-20z" />
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M5,2v12M9,2v12M13,2v12M17,2v12" />
+</vector>

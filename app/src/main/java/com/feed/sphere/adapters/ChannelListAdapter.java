@@ -142,7 +142,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.
                 tvChannelName
                         .setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.selected_channel_text));
             } else {
-                itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), android.R.color.transparent));
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.background));
                 tvChannelName.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.default_channel_text));
             }
         }
